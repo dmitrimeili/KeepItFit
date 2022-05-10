@@ -7,6 +7,8 @@ switch ($page){
     case "Login";
         Login();
     break;
+    case "tryLogin";
+    trylogin($_POST);
     default:
     MainPage();
     break;

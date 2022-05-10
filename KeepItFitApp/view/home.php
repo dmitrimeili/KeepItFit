@@ -23,7 +23,9 @@ $class = 'homepage';
             <div class="row">
 
         </section>
-
+<?php foreach ($users as $user){
+    echo $user['firstname'];
+}?>
     </div>
 
 <?php
