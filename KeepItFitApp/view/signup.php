@@ -37,11 +37,11 @@ $title = "signup";
                     </div>
                     <br>
                     <div >
-                        <input class="form-control"  type="number">
+                        <input class="form-control"  type="number" name="weight">
                     </div>
                     <br>
                     <div >
-                        <input class="form-control"  type="number">
+                        <input class="form-control"  type="number" name="height">
                     </div>
                     <br>
                     <div class="form-group">

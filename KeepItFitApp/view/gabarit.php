@@ -1,4 +1,6 @@
 <?php
+
+require_once "helpers/helpers.php";
 ?>
 
 <!DOCTYPE HTML>
@@ -9,13 +11,14 @@ Helios by HTML5 UP
 -->
 <html>
 	<head>
-		<title>Helios by HTML5 UP</title>
+		<title>KeepItFit</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="../assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
         <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
 	</head>
+    <?= flashMessage(); ?>
 	<body class="<?= $class ?> is-preload">
 		<div id="page-wrapper">
 

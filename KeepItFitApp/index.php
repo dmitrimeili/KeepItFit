@@ -12,6 +12,9 @@ switch ($page){
     case "Signup";
     SignUp();
     break;
+    case "CreateAccount";
+    CreateAccount($_POST);
+    break;
     default:
     MainPage();
     break;
