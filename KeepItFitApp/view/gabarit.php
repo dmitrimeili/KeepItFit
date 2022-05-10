@@ -55,7 +55,7 @@ Helios by HTML5 UP
 									</ul>
 								</li>
 								<li><a href="index.php?action=Login">Se connecter</a></li>
-								<li><a href="../right-sidebar.html">S'enregistrer</a></li>
+								<li><a href="index.php?action=Signup">S'enregistrer</a></li>
 								<li><a href="../no-sidebar.html">No Sidebar</a></li>
 							</ul>
 						</nav>

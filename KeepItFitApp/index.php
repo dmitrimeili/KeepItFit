@@ -9,6 +9,9 @@ switch ($page){
     break;
     case "tryLogin";
     trylogin($_POST);
+    case "Signup";
+    SignUp();
+    break;
     default:
     MainPage();
     break;

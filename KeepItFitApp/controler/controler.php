@@ -9,3 +9,6 @@ function MainPage()
 function Login(){
     require_once "view/login.php";
 }
+function SignUp(){
+    require_once "view/signup.php";
+}
