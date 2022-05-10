@@ -2,9 +2,12 @@
 session_start();
 require "controler/controler.php";
 
-$page = $_GET['action'];
+$page = $_GET["action"];
 switch ($page){
-    default;
+    case "Login";
+        Login();
+    break;
+    default:
     MainPage();
     break;
 }

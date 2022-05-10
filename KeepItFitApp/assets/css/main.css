@@ -2164,7 +2164,7 @@ input, select, textarea {
 
 	.wrapper {
 		background: #fff;
-		margin: 0 0 2em 0;
+
 		padding: 6em 0 6em 0;
 	}
 
@@ -2176,7 +2176,7 @@ input, select, textarea {
 
 	#header {
 		position: relative;
-		background-image: url("../../images/header.jpg");
+		background-image: url("../../images/main.png");
 		background-size: cover;
 		background-position: center center;
 		background-attachment: fixed;
@@ -3136,3 +3136,15 @@ input, select, textarea {
 					}
 
 	}
+.Absolute-Center {
+	margin: auto;
+	position: absolute;
+	top: 0; left: 0; bottom: 0; right: 0;
+}
+.Absolute-Center.is-Responsive {
+	width: 50%;
+	height: 50%;
+	min-width: 200px;
+	max-width: 400px;
+	padding: 40px;
+}
