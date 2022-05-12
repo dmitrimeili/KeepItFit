@@ -6,6 +6,7 @@
  */
 ob_start();
 $title = "signup";
+$class = "no-sidebar";
 
 ?>
     <div class="container wrapper style1 centered">
@@ -15,33 +16,33 @@ $title = "signup";
             <div id="logo-container"></div>
             <div class="col-sm-12 col-md-10 col-md-offset-1 w-25 p-3 ">
                 <form action="index.php?action=CreateAccount" method="post" id="signupForm">
-                    <div class="form-group ">
+                    <div>
                         <input class="form-control" type="text" name='firstname' placeholder="prénom"/>
                     </div>
                     <br>
-                    <div class="form-group ">
+                    <div>
                         <input class="form-control" type="text" name='lastname' placeholder="nom"/>
                     </div>
                     <br>
-                    <div class="form-group ">
+                    <div>
                         <input class="form-control" type="email" name='email' placeholder="email"/>
                     </div>
                     <br>
-                    <div class="form-group  ">
+                    <div>
                         <input class="form-control" type="password" name='password' placeholder="mot de passe"/>
                     </div>
                     <br>
                     <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker" inline="true">
-                        <input placeholder="Select date" type="date" id="example" class="form-control" name="birthday">
+                         Date de naissance : <input placeholder="Select date" type="date" id="example" class="form-control" name="birthday">
 
                     </div>
                     <br>
                     <div >
-                        <input class="form-control"  type="number" name="weight">
+                        Poids : <input class="form-control"  type="number" name="weight">
                     </div>
                     <br>
                     <div >
-                        <input class="form-control"  type="number" name="height">
+                        Taille en cm : <input class="form-control"  type="number" name="height">
                     </div>
                     <br>
                     <div class="form-group">

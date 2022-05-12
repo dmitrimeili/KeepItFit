@@ -57,8 +57,7 @@ Helios by HTML5 UP
 										<li><a href="#">Veroeros feugiat</a></li>
 									</ul>
 								</li>
-								<li><a href="index.php?action=Login">Se connecter</a></li>
-								<li><a href="index.php?action=Signup">S'enregistrer</a></li>
+                                <?= login_bt();?>
 								<li><a href="../no-sidebar.html">No Sidebar</a></li>
 							</ul>
 						</nav>

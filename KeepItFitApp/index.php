@@ -3,19 +3,23 @@ session_start();
 require "controler/controler.php";
 
 $page = $_GET["action"];
-switch ($page){
+switch ($page) {
     case "Login";
         Login();
-    break;
+        break;
     case "tryLogin";
-    trylogin($_POST);
+        trylogin($_POST);
+        break;
     case "Signup";
-    SignUp();
-    break;
+        SignUp();
+        break;
     case "CreateAccount";
-    CreateAccount($_POST);
-    break;
+        CreateAccount($_POST);
+        break;
+    case "Logout";
+        Logout();
+        break;
     default:
-    MainPage();
-    break;
+        MainPage();
+        break;
 }

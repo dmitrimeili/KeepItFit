@@ -3,16 +3,21 @@ require_once 'model/model.php';
 
 function MainPage()
 {
-    $users = getUsers();
     require_once "view/home.php";
 }
-function Login(){
+
+function Login()
+{
     require_once "view/login.php";
 }
-function SignUp(){
+
+function SignUp()
+{
     require_once "view/signup.php";
 }
-function CreateAccount($info){
+
+function CreateAccount($info)
+{
     $users = getUsers();
 
     foreach ($users as $user) {
@@ -38,12 +43,12 @@ function CreateAccount($info){
         ];
 
         addUser($newUser); //Add user in datasheet
-       
-        tryLogin($info['email'], $password);
+        tryLogin($info);
     }
 }
 
-function tryLogin($info){
+function tryLogin($info)
+{
 
     $users = getUsers();//Puts the values of the data sheet users in a table
 
@@ -62,11 +67,24 @@ function tryLogin($info){
 
 
             MainPage(); //Return to home page
+            $_SESSION['flashmessage'] = "Connected";
         }
     }
+
+
+
     //If the form is false the page show error
     if (!isset($_SESSION["firstname"])) {
         $_SESSION["flashmessage"] = "L'email ou le mot de passe est incorrecte";
         Login();
     }
+}
+
+function Logout()
+{
+    session_unset();
+    session_destroy();
+    $_SESSION["flashmessage"] = "Vous êtes déconnecté";
+    MainPage();
+
 }

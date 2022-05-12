@@ -10,17 +10,17 @@ $class = "no-sidebar";
             <div class="col-sm-12 col-md-10 col-md-offset-1 w-25 p-3 " >
                 <form action="index.php?action=tryLogin" id="loginForm" method="post">
                     <br>
-                    <div class="form-group input-group" >
+                    <div>
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         <input class="form-control" type="text" name='email' placeholder="Email"/>
                     </div>
                     <br>
-                    <div class="form-group input-group ">
+                    <div>
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         <input class="form-control" type="password" name='password' placeholder="Password"/>
                     </div>
                     <br>
-                    <div class="form-group ">
+                    <div>
                         <input type="submit" id="submit" value="Login">
                     </div>
                     <div class="form-group text-center">
