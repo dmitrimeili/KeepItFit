@@ -72,7 +72,6 @@ function tryLogin($info)
     }
 
 
-
     //If the form is false the page show error
     if (!isset($_SESSION["firstname"])) {
         $_SESSION["flashmessage"] = "L'email ou le mot de passe est incorrecte";
@@ -87,4 +86,37 @@ function Logout()
     $_SESSION["flashmessage"] = "Vous êtes déconnecté";
     MainPage();
 
+}
+
+function PersonalPage()
+{
+    if ($_SESSION['role_id'] == 1) {
+        require_once "view/personal.php";
+    } else {
+        $places = getPlaces();
+        $programs = getPrograms();
+        $areas = getTargetedAreas();
+        require_once "view/admin.php";
+    }
+}
+
+function addPlace($places)
+{
+    $place = $places["place"];
+    addAPlace($place);
+    PersonalPage();
+}
+
+function addTargetedArea($areas)
+{
+    $area = $areas["trargetedArea"];
+    addATargetedArea($area);
+    PersonalPage();
+}
+
+function addProgram($programs)
+{
+    $program = $programs["program"];
+    addAProgram($program);
+    PersonalPage();
 }

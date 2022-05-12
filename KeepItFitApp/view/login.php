@@ -11,12 +11,12 @@ $class = "no-sidebar";
                 <form action="index.php?action=tryLogin" id="loginForm" method="post">
                     <br>
                     <div>
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+
                         <input class="form-control" type="text" name='email' placeholder="Email"/>
                     </div>
                     <br>
                     <div>
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+
                         <input class="form-control" type="password" name='password' placeholder="Password"/>
                     </div>
                     <br>

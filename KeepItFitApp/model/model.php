@@ -23,6 +23,24 @@ function getUsers()
     return $users;
 }
 
+function getPlaces()
+{
+    $places = getAllItems("places");
+    return $places;
+}
+
+function getTargetedAreas()
+{
+    $areas = getAllItems("targetedareas");
+    return $areas;
+}
+
+function getPrograms()
+{
+    $programs = getAllItems("programs");
+    return $programs;
+}
+
 function addAnItem($table)
 {
     try {
@@ -44,6 +62,21 @@ function addUser($user)
 {
     addAnItem("users (email,firstname,lastname,weight,height,password,birthday,role_id)
     Values ('{$user["email"]}', '{$user["firstname"]}', '{$user["lastname"]}','{$user["weight"]}','{$user["height"]}','{$user["password"]}','{$user["birthday"]}','{$user["role_id"]}')");
+}
+
+function addAPlace($place)
+{
+
+    addAnItem("places (place) Values ('$place')");
+}
+
+function addATargetedArea($area)
+{
+    addAnItem("targetedareas (name) Values ('$area')");
+}
+function addAProgram($program)
+{
+    addAnItem("programs (name) Values ('$program')");
 }
 
 function callPDO()
