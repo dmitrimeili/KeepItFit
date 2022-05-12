@@ -39,6 +39,34 @@ function CreateAccount($info){
 
         addUser($newUser); //Add user in datasheet
        
-        tryLogin($newemail, $truePassword);
+        tryLogin($info['email'], $password);
+    }
+}
+
+function tryLogin($info){
+
+    $users = getUsers();//Puts the values of the data sheet users in a table
+
+    foreach ($users as $user) {
+        //If the username and the password are true the user connects to the session
+        if ($user["email"] == $info['email'] && password_verify($info['password'], $user["password"])) {
+
+            $_SESSION["firstname"] = $user["firstname"];
+            $_SESSION["lastname"] = $user["lastname"];
+            $_SESSION["email"] = $user["email"];
+            $_SESSION["role_id"] = $user["role_id"];
+            $_SESSION['height'] = $user['height'];
+            $_SESSION['weight'] = $user['weight'];
+            $_SESSION['birthday'] = $user['birthday'];
+            $_SESSION["id"] = $user["id"];
+
+
+            MainPage(); //Return to home page
+        }
+    }
+    //If the form is false the page show error
+    if (!isset($_SESSION["firstname"])) {
+        $_SESSION["flashmessage"] = "L'email ou le mot de passe est incorrecte";
+        Login();
     }
 }

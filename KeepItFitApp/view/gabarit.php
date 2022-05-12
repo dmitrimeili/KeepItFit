@@ -38,7 +38,7 @@ Helios by HTML5 UP
 					<!-- Nav -->
 						<nav id="nav">
 							<ul>
-								<li><a href="index.html">Home</a></li>
+								<li><a href="index.php?action=default">Home</a></li>
 								<li>
 									<a href="#">Dropdown</a>
 									<ul>
