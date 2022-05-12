@@ -12,7 +12,7 @@ ob_start();
             <br>
             <?php foreach ($places as $place) {?>
                 <form>
-
+                    <label for="submit"><?= $place['place']?></label>
                     <input type="submit" value="<?= $place['place']?>">
                 </form><br>
             <?php }?>
