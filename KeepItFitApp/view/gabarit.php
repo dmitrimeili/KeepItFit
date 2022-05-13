@@ -17,6 +17,7 @@ Helios by HTML5 UP
 		<link rel="stylesheet" href="../assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
         <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+        <script src="js/js.js"></script>
 	</head>
     <?= flashMessage(); ?>
 	<body class="<?= $class ?> is-preload">

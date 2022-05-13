@@ -31,6 +31,18 @@ switch ($page) {
     case "addProgram";
         addProgram($_POST);
         break;
+    case "delPlace";
+        delPlace($_POST);
+        break;
+    case "delArea";
+        delArea($_POST);
+        break;
+    case "delProgram";
+        delProgram($_POST);
+        break;
+        case "CreateExPage";
+        CreateExPage();
+        break;
     default:
         MainPage();
         break;

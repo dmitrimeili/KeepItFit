@@ -74,9 +74,42 @@ function addATargetedArea($area)
 {
     addAnItem("targetedareas (name) Values ('$area')");
 }
+
 function addAProgram($program)
 {
     addAnItem("programs (name) Values ('$program')");
+}
+
+function deleteItem($table)// mettre à jour un item dans la bdd
+{
+    try {
+        $dbh = callPDO();
+        $query = "DELETE FROM $table";
+        $statement = $dbh->prepare($query);
+        $statement->execute();
+        $queryResult = $statement->fetch();
+        $dbh = null;
+        return $queryResult;
+    } catch (PDOException $e) {
+        print "Error!: " . $e->getMessage() . "<br/>";
+        return null;
+    }
+}
+
+function delAPlace($place)
+{
+
+    deleteItem("places where place = '$place'");
+}
+
+function delAnArea($area)
+{
+    deleteItem("targetedareas where name = '$area'");
+}
+
+function delAProgram($program)
+{
+    deleteItem("programs where name = '$program'");
 }
 
 function callPDO()

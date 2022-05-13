@@ -100,23 +100,95 @@ function PersonalPage()
     }
 }
 
-function addPlace($places)
+function addPlace($place)
 {
-    $place = $places["place"];
-    addAPlace($place);
+    $getPlaces = getPlaces();
+
+    foreach ($getPlaces as $getPlace) {
+        if ($place['place'] == $getPlace['place']) {
+
+            $exist = true;
+        }
+    }
+    if ($exist == true) {
+        $_SESSION['flashmessage'] = "Lieu déjà existant";
+
+    } elseif ($place['place'] == "") {
+        $_SESSION['flashmessage'] = "Champ vide";
+    } else {
+        addAPlace($place['place']);
+    }
+    PersonalPage();
+
+}
+
+function addTargetedArea($area)
+{
+    $getAreas = getTargetedAreas();
+    foreach ($getAreas as $getArea) {
+
+        if ($area['trargetedArea'] == $getArea['name']) {
+
+            $exist = true;
+        }
+    }
+    if ($exist == true) {
+        $_SESSION['flashmessage'] = "Zone ciblée déjà existante";
+    }elseif ($area['trargetedArea'] == "") {
+        $_SESSION['flashmessage'] = "Champ vide";
+    }
+    else {
+        addATargetedArea($area["trargetedArea"]);
+    }
+
     PersonalPage();
 }
 
-function addTargetedArea($areas)
+function addProgram($program)
 {
-    $area = $areas["trargetedArea"];
-    addATargetedArea($area);
+    $getPrograms = getPrograms();
+    foreach ($getPrograms as $getProgram) {
+        if ($getProgram['name'] == $program['program']) {
+            $exist = true;
+        }
+    }
+    if ($exist == true) {
+        $_SESSION['flashmessage'] = "Programme déjà existant";
+    }elseif ($program['program'] == "") {
+        $_SESSION['flashmessage'] = "Champ vide";
+    }
+    else {
+        addAProgram($program["program"]);
+    }
+
+
     PersonalPage();
 }
 
-function addProgram($programs)
+function delPlace($place)
 {
-    $program = $programs["program"];
-    addAProgram($program);
+
+    delAplace($place['delplace']);
     PersonalPage();
+}
+
+function delArea($area)
+{
+    delAnArea($area['delarea']);
+    PersonalPage();
+}
+
+function delProgram($program)
+{
+    delAProgram($program['delprogram']);
+    PersonalPage();
+}
+
+function createExPage()
+{
+    $places = getPlaces();
+    $programs = getPrograms();
+    $areas = getTargetedAreas();
+    require_once "view/createEx.php";
+
 }
