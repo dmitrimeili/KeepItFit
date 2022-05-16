@@ -41,6 +41,13 @@ function getPrograms()
     return $programs;
 }
 
+function getMaterials()
+{
+    $materials = getAllItems("materials");
+    return $materials;
+}
+
+
 function addAnItem($table)
 {
     try {
@@ -80,6 +87,11 @@ function addAProgram($program)
     addAnItem("programs (name) Values ('$program')");
 }
 
+function addAMaterial($material)
+{
+    addAnItem("materials (name) Values ('$material')");
+}
+
 function deleteItem($table)// mettre à jour un item dans la bdd
 {
     try {
@@ -112,6 +124,10 @@ function delAProgram($program)
     deleteItem("programs where name = '$program'");
 }
 
+function delAMaterial($material)
+{
+    deleteItem("materials where name = '$material'");
+}
 function callPDO()
 {
     require ".const.php";

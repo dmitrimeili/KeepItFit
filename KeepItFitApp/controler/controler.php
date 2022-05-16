@@ -20,30 +20,35 @@ function CreateAccount($info)
 {
     $users = getUsers();
 
-    foreach ($users as $user) {
-        //Check if email already exist in db
-        if ($user["email"] == $info['email']) {
-            $_SESSION["flashmessage"] = "l'email est déja utilisé";
-            $login = false;
-            Signup();
+    if (($info['firstname'] == "") || ($info['lastname'] == "") || ($info['email'] == "") || ($info['weight'] == "") || ($info['height'] == "") || ($info['password'] == "") || ($info['birthday'] == "") ) {
+        $_SESSION["flashmessage"] = "Veuillez remplir tout les champs";
+        SignUp();
+    } else {
+        foreach ($users as $user) {
+            //Check if email already exist in db
+            if ($user["email"] == $info['email']) {
+                $_SESSION["flashmessage"] = "l'email est déja utilisé";
+                $login = false;
+                Signup();
+            }
         }
-    }
-    if (!isset($login)) {
-        $password = $info['password'];
-        $password = password_hash($password, PASSWORD_DEFAULT);//Hashing password
-        $newUser = [
-            "firstname" => $info['firstname'],
-            "lastname" => $info['lastname'],
-            "email" => $info['email'],
-            "weight" => $info['weight'],
-            "height" => $info['height'],
-            "password" => $password,
-            "birthday" => $info['birthday'],
-            "role_id" => 1
-        ];
+        if (!isset($login)) {
+            $password = $info['password'];
+            $password = password_hash($password, PASSWORD_DEFAULT);//Hashing password
+            $newUser = [
+                "firstname" => $info['firstname'],
+                "lastname" => $info['lastname'],
+                "email" => $info['email'],
+                "weight" => $info['weight'],
+                "height" => $info['height'],
+                "password" => $password,
+                "birthday" => $info['birthday'],
+                "role_id" => 1
+            ];
 
-        addUser($newUser); //Add user in datasheet
-        tryLogin($info);
+            addUser($newUser); //Add user in datasheet
+            tryLogin($info);
+        }
     }
 }
 
@@ -51,32 +56,36 @@ function tryLogin($info)
 {
 
     $users = getUsers();//Puts the values of the data sheet users in a table
+    if (($info['email'] == null) || ($info['password'] == null)) {
+        $_SESSION['flashmessage'] = "Veuilliez remplir tout les champs";
+        Login();
+    } else {
+        foreach ($users as $user) {
+            //If the username and the password are true the user connects to the session
+            if ($user["email"] == $info['email'] && password_verify($info['password'], $user["password"])) {
 
-    foreach ($users as $user) {
-        //If the username and the password are true the user connects to the session
-        if ($user["email"] == $info['email'] && password_verify($info['password'], $user["password"])) {
+                $_SESSION["firstname"] = $user["firstname"];
+                $_SESSION["lastname"] = $user["lastname"];
+                $_SESSION["email"] = $user["email"];
+                $_SESSION["role_id"] = $user["role_id"];
+                $_SESSION['height'] = $user['height'];
+                $_SESSION['weight'] = $user['weight'];
+                $_SESSION['birthday'] = $user['birthday'];
+                $_SESSION["id"] = $user["id"];
 
-            $_SESSION["firstname"] = $user["firstname"];
-            $_SESSION["lastname"] = $user["lastname"];
-            $_SESSION["email"] = $user["email"];
-            $_SESSION["role_id"] = $user["role_id"];
-            $_SESSION['height'] = $user['height'];
-            $_SESSION['weight'] = $user['weight'];
-            $_SESSION['birthday'] = $user['birthday'];
-            $_SESSION["id"] = $user["id"];
+                $_SESSION['flashmessage'] = "Connecté";
+                MainPage(); //Return to home page
 
-
-            MainPage(); //Return to home page
-            $_SESSION['flashmessage'] = "Connected";
+            }
+        }
+        //If the form is false the page show error
+        if (!isset($_SESSION["firstname"])) {
+            $_SESSION["flashmessage"] = "L'email ou le mot de passe est incorrecte";
+            Login();
         }
     }
 
 
-    //If the form is false the page show error
-    if (!isset($_SESSION["firstname"])) {
-        $_SESSION["flashmessage"] = "L'email ou le mot de passe est incorrecte";
-        Login();
-    }
 }
 
 function Logout()
@@ -96,6 +105,7 @@ function PersonalPage()
         $places = getPlaces();
         $programs = getPrograms();
         $areas = getTargetedAreas();
+        $materials = getMaterials();
         require_once "view/admin.php";
     }
 }
@@ -134,10 +144,9 @@ function addTargetedArea($area)
     }
     if ($exist == true) {
         $_SESSION['flashmessage'] = "Zone ciblée déjà existante";
-    }elseif ($area['trargetedArea'] == "") {
+    } elseif ($area['trargetedArea'] == "") {
         $_SESSION['flashmessage'] = "Champ vide";
-    }
-    else {
+    } else {
         addATargetedArea($area["trargetedArea"]);
     }
 
@@ -154,16 +163,38 @@ function addProgram($program)
     }
     if ($exist == true) {
         $_SESSION['flashmessage'] = "Programme déjà existant";
-    }elseif ($program['program'] == "") {
+    } elseif ($program['program'] == "") {
         $_SESSION['flashmessage'] = "Champ vide";
-    }
-    else {
+    } else {
         addAProgram($program["program"]);
     }
 
 
     PersonalPage();
 }
+
+function addMaterial($material)
+{
+
+    $getMaterials = getMaterials();
+
+    foreach ($getMaterials as $getMaterial) {
+        if ($getMaterial['name'] == $material['material']) {
+            $exist = true;
+        }
+    }
+    if ($exist == true) {
+        $_SESSION['flashmessage'] = "Matériel déjà existant";
+    } elseif ($material['material'] == "") {
+        $_SESSION['flashmessage'] = "Champ vide";
+    } else {
+        addAMaterial($material["material"]);
+    }
+
+
+    PersonalPage();
+}
+
 
 function delPlace($place)
 {
@@ -184,11 +215,19 @@ function delProgram($program)
     PersonalPage();
 }
 
+function delMaterial($material)
+{
+
+    delAMaterial($material['delmaterial']);
+    PersonalPage();
+}
+
 function createExPage()
 {
     $places = getPlaces();
     $programs = getPrograms();
     $areas = getTargetedAreas();
+    $materials = getMaterials();
     require_once "view/createEx.php";
 
 }

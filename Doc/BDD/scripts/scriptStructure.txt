@@ -15,26 +15,9 @@ CREATE SCHEMA IF NOT EXISTS `KeepItFit` DEFAULT CHARACTER SET utf8 ;
 USE `KeepItFit` ;
 
 -- -----------------------------------------------------
--- Table `KeepItFit`.`Exercises`
+-- Table `KeepItFit`.`materials`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `KeepItFit`.`Exercises` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `exercise` VARCHAR(45) NOT NULL,
-  `image` VARCHAR(100) NULL,
-  `description` VARCHAR(500) NOT NULL,
-  `repetition` INT NULL,
-  `time` TIME NULL,
-  `difficulty` INT NOT NULL,
-  `material` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `Exercise_UNIQUE` (`exercise` ASC) VISIBLE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `KeepItFit`.`Roles`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `KeepItFit`.`Roles` (
+CREATE TABLE IF NOT EXISTS `KeepItFit`.`materials` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
@@ -43,9 +26,43 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `KeepItFit`.`Users`
+-- Table `KeepItFit`.`exercises`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `KeepItFit`.`Users` (
+CREATE TABLE IF NOT EXISTS `KeepItFit`.`exercises` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `exercise` VARCHAR(45) NOT NULL,
+  `image` VARCHAR(100) NULL,
+  `description` VARCHAR(500) NOT NULL,
+  `repetition` INT NULL,
+  `time` TIME NULL,
+  `difficulty` INT NOT NULL,
+  `materials_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `Exercise_UNIQUE` (`exercise` ASC) VISIBLE,
+  INDEX `fk_exercises_materials1_idx` (`materials_id` ASC) VISIBLE,
+  CONSTRAINT `fk_exercises_materials1`
+    FOREIGN KEY (`materials_id`)
+    REFERENCES `KeepItFit`.`materials` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `KeepItFit`.`roles`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `KeepItFit`.`roles` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `KeepItFit`.`users`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `KeepItFit`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(45) NOT NULL,
   `firstname` VARCHAR(45) NOT NULL,
@@ -54,22 +71,22 @@ CREATE TABLE IF NOT EXISTS `KeepItFit`.`Users` (
   `height` INT NOT NULL,
   `password` VARCHAR(60) NOT NULL,
   `birthday` DATE NOT NULL,
-  `Roles_id` INT NOT NULL,
+  `role_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
-  INDEX `fk_Users_Roles_idx` (`Roles_id` ASC) VISIBLE,
+  INDEX `fk_Users_Roles_idx` (`role_id` ASC) VISIBLE,
   CONSTRAINT `fk_Users_Roles`
-    FOREIGN KEY (`Roles_id`)
-    REFERENCES `KeepItFit`.`Roles` (`id`)
+    FOREIGN KEY (`role_id`)
+    REFERENCES `KeepItFit`.`roles` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `KeepItFit`.`TargetedAreas`
+-- Table `KeepItFit`.`targetedareas`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `KeepItFit`.`TargetedAreas` (
+CREATE TABLE IF NOT EXISTS `KeepItFit`.`targetedareas` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
@@ -78,9 +95,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `KeepItFit`.`Places`
+-- Table `KeepItFit`.`places`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `KeepItFit`.`Places` (
+CREATE TABLE IF NOT EXISTS `KeepItFit`.`places` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `place` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
@@ -89,9 +106,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `KeepItFit`.`Programs`
+-- Table `KeepItFit`.`programs`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `KeepItFit`.`Programs` (
+CREATE TABLE IF NOT EXISTS `KeepItFit`.`programs` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
@@ -100,92 +117,92 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `KeepItFit`.`Exercises_practice_Places`
+-- Table `KeepItFit`.`exercises_practice_places`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `KeepItFit`.`Exercises_practice_Places` (
+CREATE TABLE IF NOT EXISTS `KeepItFit`.`exercises_practice_places` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `Exercises_id` INT NOT NULL,
-  `Places_id` INT NOT NULL,
-  INDEX `fk_Exercises_has_Places_Places1_idx` (`Places_id` ASC) VISIBLE,
-  INDEX `fk_Exercises_has_Places_Exercises1_idx` (`Exercises_id` ASC) VISIBLE,
+  `exercise_id` INT NOT NULL,
+  `place_id` INT NOT NULL,
+  INDEX `fk_Exercises_has_Places_Places1_idx` (`place_id` ASC) VISIBLE,
+  INDEX `fk_Exercises_has_Places_Exercises1_idx` (`exercise_id` ASC) VISIBLE,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_Exercises_has_Places_Exercises1`
-    FOREIGN KEY (`Exercises_id`)
-    REFERENCES `KeepItFit`.`Exercises` (`id`)
+    FOREIGN KEY (`exercise_id`)
+    REFERENCES `KeepItFit`.`exercises` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Exercises_has_Places_Places1`
-    FOREIGN KEY (`Places_id`)
-    REFERENCES `KeepItFit`.`Places` (`id`)
+    FOREIGN KEY (`place_id`)
+    REFERENCES `KeepItFit`.`places` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `KeepItFit`.`Exercises_use_TargetedAreas`
+-- Table `KeepItFit`.`exercises_use_targetedareas`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `KeepItFit`.`Exercises_use_TargetedAreas` (
+CREATE TABLE IF NOT EXISTS `KeepItFit`.`exercises_use_targetedareas` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `Exercises_id` INT NOT NULL,
-  `TargetedAreas_id` INT NOT NULL,
-  INDEX `fk_Exercises_has_TargetedAreas_TargetedAreas1_idx` (`TargetedAreas_id` ASC) VISIBLE,
-  INDEX `fk_Exercises_has_TargetedAreas_Exercises1_idx` (`Exercises_id` ASC) VISIBLE,
+  `exercise_id` INT NOT NULL,
+  `targetedarea_id` INT NOT NULL,
+  INDEX `fk_Exercises_has_TargetedAreas_TargetedAreas1_idx` (`targetedarea_id` ASC) VISIBLE,
+  INDEX `fk_Exercises_has_TargetedAreas_Exercises1_idx` (`exercise_id` ASC) VISIBLE,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_Exercises_has_TargetedAreas_Exercises1`
-    FOREIGN KEY (`Exercises_id`)
-    REFERENCES `KeepItFit`.`Exercises` (`id`)
+    FOREIGN KEY (`exercise_id`)
+    REFERENCES `KeepItFit`.`exercises` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Exercises_has_TargetedAreas_TargetedAreas1`
-    FOREIGN KEY (`TargetedAreas_id`)
-    REFERENCES `KeepItFit`.`TargetedAreas` (`id`)
+    FOREIGN KEY (`targetedarea_id`)
+    REFERENCES `KeepItFit`.`targetedareas` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `KeepItFit`.`Sequencies`
+-- Table `KeepItFit`.`sequencies`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `KeepItFit`.`Sequencies` (
+CREATE TABLE IF NOT EXISTS `KeepItFit`.`sequencies` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `Exercises_id` INT NOT NULL,
-  `Programs_id` INT NOT NULL,
+  `exercise_id` INT NOT NULL,
+  `program_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Sequencies_Exercises1_idx` (`Exercises_id` ASC) VISIBLE,
-  INDEX `fk_Sequencies_Programs1_idx` (`Programs_id` ASC) VISIBLE,
+  INDEX `fk_Sequencies_Exercises1_idx` (`exercise_id` ASC) VISIBLE,
+  INDEX `fk_Sequencies_Programs1_idx` (`program_id` ASC) VISIBLE,
   CONSTRAINT `fk_Sequencies_Exercises1`
-    FOREIGN KEY (`Exercises_id`)
-    REFERENCES `KeepItFit`.`Exercises` (`id`)
+    FOREIGN KEY (`exercise_id`)
+    REFERENCES `KeepItFit`.`exercises` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Sequencies_Programs1`
-    FOREIGN KEY (`Programs_id`)
-    REFERENCES `KeepItFit`.`Programs` (`id`)
+    FOREIGN KEY (`program_id`)
+    REFERENCES `KeepItFit`.`programs` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `KeepItFit`.`Sequencies_has_Users`
+-- Table `KeepItFit`.`sequencies_has_users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `KeepItFit`.`Sequencies_has_Users` (
+CREATE TABLE IF NOT EXISTS `KeepItFit`.`sequencies_has_users` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `Sequencies_id` INT NOT NULL,
-  `Users_id` INT NOT NULL,
-  INDEX `fk_Sequencies_has_Users_Users1_idx` (`Users_id` ASC) VISIBLE,
-  INDEX `fk_Sequencies_has_Users_Sequencies1_idx` (`Sequencies_id` ASC) VISIBLE,
+  `sequencie_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  INDEX `fk_Sequencies_has_Users_Users1_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_Sequencies_has_Users_Sequencies1_idx` (`sequencie_id` ASC) VISIBLE,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_Sequencies_has_Users_Sequencies1`
-    FOREIGN KEY (`Sequencies_id`)
-    REFERENCES `KeepItFit`.`Sequencies` (`id`)
+    FOREIGN KEY (`sequencie_id`)
+    REFERENCES `KeepItFit`.`sequencies` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Sequencies_has_Users_Users1`
-    FOREIGN KEY (`Users_id`)
-    REFERENCES `KeepItFit`.`Users` (`id`)
+    FOREIGN KEY (`user_id`)
+    REFERENCES `KeepItFit`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
