@@ -43,11 +43,14 @@ switch ($page) {
     case "delProgram";
         delProgram($_POST);
         break;
-        case "delMaterial";
+    case "delMaterial";
         delMaterial($_POST);
         break;
     case "CreateExPage";
         CreateExPage();
+        break;
+    case "createEx";
+        CreateEx($_POST, $_FILES);
         break;
     default:
         MainPage();

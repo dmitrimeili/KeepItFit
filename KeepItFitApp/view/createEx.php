@@ -1,12 +1,13 @@
 <?php
+$class = "no-sidebar";
 ob_start();
 
 ?>
 <div class="container wrapper style1 centered">
     <div class="row justify-content-center">
         <div class="col-sm-12 col-md-10 col-md-offset-1 w-25 p-3 ">
-            <form>
-                <input type="file" name="fileToUpload" id="fileToUpload">
+            <form id="createExForm" action="index.php?action=createEx" method="post" enctype="multipart/form-data">
+                <input type="file" name="fileToUpload" id="fileToUpload"><br>
                 <input type="text" name="name" placeholder="Nom"><br>
                 <select name="program">
                     <?php foreach ($programs as $program) { ?>
@@ -27,6 +28,8 @@ ob_start();
                         <option value="<?= $area['id'] ?>"><?= $area['name'] ?></option>
                     <?php } ?>
                 </select><br>
+                <input type="submit" id="submit" name="submit" value="Créer l'exercice">
+
             </form>
         </div>
     </div>

@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `KeepItFit`.`exercises` (
   `image` VARCHAR(100) NULL,
   `description` VARCHAR(500) NOT NULL,
   `repetition` INT NULL,
-  `time` TIME NULL,
+  `time` INT NULL,
   `difficulty` INT NOT NULL,
   `materials_id` INT NOT NULL,
   PRIMARY KEY (`id`),

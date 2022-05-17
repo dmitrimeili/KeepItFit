@@ -20,7 +20,7 @@ function CreateAccount($info)
 {
     $users = getUsers();
 
-    if (($info['firstname'] == "") || ($info['lastname'] == "") || ($info['email'] == "") || ($info['weight'] == "") || ($info['height'] == "") || ($info['password'] == "") || ($info['birthday'] == "") ) {
+    if (($info['firstname'] == "") || ($info['lastname'] == "") || ($info['email'] == "") || ($info['weight'] == "") || ($info['height'] == "") || ($info['password'] == "") || ($info['birthday'] == "")) {
         $_SESSION["flashmessage"] = "Veuillez remplir tout les champs";
         SignUp();
     } else {
@@ -229,5 +229,73 @@ function createExPage()
     $areas = getTargetedAreas();
     $materials = getMaterials();
     require_once "view/createEx.php";
+
+}
+
+function createEx($info, $file)
+{
+
+    if (($info['name'] == "") || ($info['description'] == "") || ($info['difficulty'] == "") || ($info['material'] == "")  || ($file['fileToUpload']['name'] == "")) {
+        $_SESSION["flashmessage"] = "Veuillez remplir tout les champs";
+        var_dump($file["fileToUpload"]["name"]);
+        createExPage();
+
+    } else {
+        $target_dir = "images/";
+        $target_file = $target_dir . basename($file["fileToUpload"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        // Check if image file is a actual image or fake image
+        if (isset($info["submit"])) {
+            $check = getimagesize($file["fileToUpload"]["tmp_name"]);
+            if ($check !== false) {
+                //echo "File is an image - " . $check["mime"] . ".";
+
+                $uploadOk = 1;
+            } else {
+                //echo "File is not an image.";
+                $uploadOk = 0;
+            }
+        }
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            //echo "Sorry, file already exists.";
+            $fileexist = "le fichier existe déja";
+            $uploadOk = 0;
+        }
+        // Check file size
+        if ($file["fileToUpload"]["size"] > 500000) {
+            //echo "Sorry, your file is too large.";
+            $filelarge = "le fichier est trop large";
+            $uploadOk = 0;
+        }
+        // Allow certain file formats
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif") {
+            //echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+            $notimage = "seulment les fichiers JPG, JPEG, PNG & GIF sont autorisé";
+            $uploadOk = 0;
+        }
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            $_SESSION['flashmessage']= "Désolé " . $fileexist . $filelarge . $notimage ;
+            createExPage();
+            //echo "Sorry, your file was not uploaded.";
+            // if everything is ok, try to upload file
+        } else {
+            if (move_uploaded_file($file["fileToUpload"]["tmp_name"], $target_file)) {
+                echo "The file " . htmlspecialchars(basename($file["fileToUpload"]["name"])) . " has been uploaded.";
+            } else {
+                echo "Sorry, there was an error uploading your file.";
+            }
+        }
+        if ($uploadOk == 1) {
+            $description = htmlspecialchars($info["description"]);//utilise la fonction htmlspecialchars pour omettre les ' quand on execute l'sql
+            addAnEx($info['name'], $file["fileToUpload"]["name"], $description, $info['reps'], $info['time'], $info['difficulty'], $info['material']);
+            $_SESSION['flashmessage'] = "exercice créer";
+            MainPage();
+        }
+    }
+
 
 }

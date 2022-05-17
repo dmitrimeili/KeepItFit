@@ -1952,6 +1952,7 @@ input, select, textarea {
 	form input[type="password"],
 	form input[type="number"],
 	form input[type="date"],
+	form input[type="file"],
 	form select,
 	form textarea {
 		-webkit-appearance: none;

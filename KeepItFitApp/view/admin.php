@@ -1,6 +1,6 @@
 <?php
 ob_start();
-
+$class = "no-sidebar";
 ?>
 <div class="container wrapper style1 centered">
     <div>

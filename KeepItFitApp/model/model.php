@@ -91,6 +91,12 @@ function addAMaterial($material)
 {
     addAnItem("materials (name) Values ('$material')");
 }
+function addAnEx($name,$image,$description,$reps,$time,$diff,$material){
+
+    addAnItem("exercises (exercise,image,description,repetition,time,difficulty,materials_id)
+    Values ('$name','$image','$description',$reps,$time,$diff,$material)");
+}
+
 
 function deleteItem($table)// mettre à jour un item dans la bdd
 {
