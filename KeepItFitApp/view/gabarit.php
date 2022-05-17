@@ -59,7 +59,7 @@ Helios by HTML5 UP
 									</ul>
 								</li>
                                 <?= login_bt();?>
-								<li><a href="../no-sidebar.html">No Sidebar</a></li>
+								<li><a href="../assets/no-sidebar.html">No Sidebar</a></li>
 							</ul>
 						</nav>
 
