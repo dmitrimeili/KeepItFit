@@ -234,13 +234,24 @@ function createExPage()
 
 function createEx($info, $file)
 {
-
-    if (($info['name'] == "") || ($info['description'] == "") || ($info['difficulty'] == "") || ($info['material'] == "")  || ($file['fileToUpload']['name'] == "")) {
+    $getExercises = getExercises();
+    foreach ($getExercises as $getExercise){
+        if($getExercise['exercise'] == $info['name'])
+        {
+            $exist = true;
+        }
+    }
+    if($exist == true)
+    {
+        $_SESSION["flashmessage"] = "le nom de l'exercice existe déja.";
+        createExPage();
+    }
+    elseif (($info['name'] == "") || ($info['description'] == "") || ($info['difficulty'] == "") || ($info['material'] == "") || ($info['place'] == "") || ($file['fileToUpload']['name'] == "")) {
         $_SESSION["flashmessage"] = "Veuillez remplir tout les champs";
-        var_dump($file["fileToUpload"]["name"]);
         createExPage();
 
-    } else {
+    }
+    else {
         $target_dir = "images/";
         $target_file = $target_dir . basename($file["fileToUpload"]["name"]);
         $uploadOk = 1;
@@ -278,23 +289,26 @@ function createEx($info, $file)
         }
         // Check if $uploadOk is set to 0 by an error
         if ($uploadOk == 0) {
-            $_SESSION['flashmessage']= "Désolé " . $fileexist . $filelarge . $notimage ;
+            $_SESSION['flashmessage'] = "Désolé " . $fileexist . $filelarge . $notimage;
             createExPage();
             //echo "Sorry, your file was not uploaded.";
             // if everything is ok, try to upload file
         } else {
             if (move_uploaded_file($file["fileToUpload"]["tmp_name"], $target_file)) {
-                echo "The file " . htmlspecialchars(basename($file["fileToUpload"]["name"])) . " has been uploaded.";
+                $description = htmlspecialchars($info["description"]);//utilise la fonction htmlspecialchars pour omettre les ' quand on execute l'sql
+                addAnEx($info['name'], $file["fileToUpload"]["name"], $description, $info['reps'], $info['time'], $info['difficulty'], $info['material']);
+                $exercise = getAnExercise($info['name']);
+                addAnExPlace($exercise['id'], $info['place']);
+                addAnExArea($exercise['id'], $info['area']);
+                addSequencie($exercise['id'], $info['program']);
+                $_SESSION['flashmessage'] = "exercice créer";
+                MainPage();
             } else {
-                echo "Sorry, there was an error uploading your file.";
+                $_SESSION['flashmessage'] = "Désolé il y a eu une erreur au moment de l'upload de l'image veuilliez réessayer.";
+                CreateExPage();
             }
         }
-        if ($uploadOk == 1) {
-            $description = htmlspecialchars($info["description"]);//utilise la fonction htmlspecialchars pour omettre les ' quand on execute l'sql
-            addAnEx($info['name'], $file["fileToUpload"]["name"], $description, $info['reps'], $info['time'], $info['difficulty'], $info['material']);
-            $_SESSION['flashmessage'] = "exercice créer";
-            MainPage();
-        }
+
     }
 
 

@@ -9,6 +9,11 @@ ob_start();
             <form id="createExForm" action="index.php?action=createEx" method="post" enctype="multipart/form-data">
                 <input type="file" name="fileToUpload" id="fileToUpload"><br>
                 <input type="text" name="name" placeholder="Nom"><br>
+                <select name="place">
+                    <?php foreach ($places as $place) { ?>
+                        <option value="<?= $place['id'] ?>"><?= $place['place'] ?></option>
+                    <?php } ?>
+                </select><br>
                 <select name="program">
                     <?php foreach ($programs as $program) { ?>
                         <option value="<?= $program['id'] ?>"><?= $program['name'] ?></option>

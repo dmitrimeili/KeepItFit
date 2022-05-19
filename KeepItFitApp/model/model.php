@@ -47,6 +47,34 @@ function getMaterials()
     return $materials;
 }
 
+function getExercises()
+{
+    $exercises = getAllItems("exercises");
+    return $exercises;
+}
+
+function getAnItem($table) // get un item
+{
+    try {
+        $dbh = callPDO();
+        $query = "SELECT * FROM $table";
+        $statment = $dbh->prepare($query);
+        $statment->execute();
+        $queryResults = $statment->fetch(PDO::FETCH_ASSOC);
+        return $queryResults;
+        $dbh = null;
+    } catch (PDOException $e) {
+        print "Error!: " . $e->getMessage() . "<br/>";
+        return null;
+    }
+}
+
+function getAnExercise($name)
+{
+    $exercise = getAnItem("exercises where exercise = '$name'");
+    return $exercise;
+
+}
 
 function addAnItem($table)
 {
@@ -97,6 +125,19 @@ function addAnEx($name,$image,$description,$reps,$time,$diff,$material){
     Values ('$name','$image','$description',$reps,$time,$diff,$material)");
 }
 
+function addAnExPlace($exerciseId,$placeId)
+{
+    addAnItem("exercises_practice_places (exercise_id,place_id) Values ($exerciseId,$placeId)");
+}
+function addAnExArea($exerciseId,$areaId)
+{
+    addAnItem("exercises_use_targetedareas (exercise_id,targetedarea_id) Values ($exerciseId,$areaId)");
+}
+
+function addSequencie($exerciseId,$programId)
+{
+    addAnItem("sequencies (exercise_id,program_id) Values($exerciseId,$programId)");
+}
 
 function deleteItem($table)// mettre à jour un item dans la bdd
 {
@@ -139,4 +180,5 @@ function callPDO()
     require ".const.php";
     $dbh = new PDO('mysql:host=' . $dbhost . ';dbname=' . $dbname, $user, $pass);
     return $dbh;
+
 }
