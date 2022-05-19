@@ -3151,3 +3151,13 @@ input, select, textarea {
 	max-width: 400px;
 	padding: 40px;
 }
+.block {
+	display: block;
+	width: 100%;
+}
+.content {
+	max-width: 50%;
+	margin: auto;
+	display : block;
+
+}

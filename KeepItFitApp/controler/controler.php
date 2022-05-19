@@ -6,7 +6,7 @@ function MainPage()
     require_once "view/home.php";
 }
 
-function Login()
+function login()
 {
     require_once "view/login.php";
 }
@@ -16,7 +16,7 @@ function SignUp()
     require_once "view/signup.php";
 }
 
-function CreateAccount($info)
+function createAccount($info)
 {
     $users = getUsers();
 
@@ -58,7 +58,7 @@ function tryLogin($info)
     $users = getUsers();//Puts the values of the data sheet users in a table
     if (($info['email'] == null) || ($info['password'] == null)) {
         $_SESSION['flashmessage'] = "Veuilliez remplir tout les champs";
-        Login();
+        login();
     } else {
         foreach ($users as $user) {
             //If the username and the password are true the user connects to the session
@@ -81,14 +81,14 @@ function tryLogin($info)
         //If the form is false the page show error
         if (!isset($_SESSION["firstname"])) {
             $_SESSION["flashmessage"] = "L'email ou le mot de passe est incorrecte";
-            Login();
+            login();
         }
     }
 
 
 }
 
-function Logout()
+function logout()
 {
     session_unset();
     session_destroy();
@@ -296,13 +296,22 @@ function createEx($info, $file)
         } else {
             if (move_uploaded_file($file["fileToUpload"]["tmp_name"], $target_file)) {
                 $description = htmlspecialchars($info["description"]);//utilise la fonction htmlspecialchars pour omettre les ' quand on execute l'sql
+
+                if($info['reps'] == "")
+                {
+                    $info['reps'] = 0;
+                }
+                if($info['time'] == "")
+                {
+                    $info['time'] = 0;
+                }
                 addAnEx($info['name'], $file["fileToUpload"]["name"], $description, $info['reps'], $info['time'], $info['difficulty'], $info['material']);
                 $exercise = getAnExercise($info['name']);
                 addAnExPlace($exercise['id'], $info['place']);
                 addAnExArea($exercise['id'], $info['area']);
                 addSequencie($exercise['id'], $info['program']);
                 $_SESSION['flashmessage'] = "exercice créer";
-                MainPage();
+                allExPage();
             } else {
                 $_SESSION['flashmessage'] = "Désolé il y a eu une erreur au moment de l'upload de l'image veuilliez réessayer.";
                 CreateExPage();
@@ -312,4 +321,16 @@ function createEx($info, $file)
     }
 
 
+}
+
+function allExPage()
+{
+    $exercises = getExercises();
+    require_once "view/allEx.php";
+}
+
+function exDetails($name)
+{
+    $exercise = getAnExercise($name['name']);
+    require_once "view/exDetails.php";
 }

@@ -3,10 +3,17 @@ ob_start();
 $class = "no-sidebar";
 ?>
 <div class="container wrapper style1 centered">
-    <div>
-        <a href="index.php?action=CreateExPage" class="centered">
-            <button>Créer un exercice</button>
-        </a>
+    <div class="row">
+        <div class="col-sm">
+            <a href="index.php?action=CreateExPage" class="centered">
+                <button>Créer un exercice</button>
+            </a>
+        </div>
+        <div class="col-sm">
+            <a href="index.php?action=allExPage" class="centered">
+                <button>Voir tout les exercice</button>
+            </a>
+        </div>
     </div>
     <div class="row">
         <div class="col-sm">

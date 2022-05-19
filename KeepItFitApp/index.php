@@ -5,7 +5,7 @@ require "controler/controler.php";
 $page = $_GET["action"];
 switch ($page) {
     case "Login";
-        Login();
+        login();
         break;
     case "tryLogin";
         trylogin($_POST);
@@ -14,13 +14,13 @@ switch ($page) {
         SignUp();
         break;
     case "CreateAccount";
-        CreateAccount($_POST);
+        createAccount($_POST);
         break;
     case "Logout";
-        Logout();
+        logout();
         break;
     case "PersonalPage";
-        PersonalPage();
+        personalPage();
         break;
     case "addPlace";
         addPlace($_POST);
@@ -51,6 +51,12 @@ switch ($page) {
         break;
     case "createEx";
         CreateEx($_POST, $_FILES);
+        break;
+    case "allExPage";
+        allExPage();
+        break;
+    case "exDetails";
+        exDetails($_GET);
         break;
     default:
         MainPage();
