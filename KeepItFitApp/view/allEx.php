@@ -4,7 +4,11 @@ $class = "no-sidebar";
 ?>
 
 <div class="container wrapper style1 centered">
-
+    <div class="col-sm">
+        <a href="index.php?action=CreateExPage" class="centered">
+            <button>Créer un exercice</button>
+        </a>
+    </div>
     <?php foreach ($exercises as $exercise){?>
         <div class="rounded w3-hover-shadow"><br>
             <img src="images/<?=$exercise['image']?>" width="150px" height="150px">
@@ -15,7 +19,7 @@ $class = "no-sidebar";
             <?php if($exercise['repetition'] != 0) { ?>
             &nbsp;&nbsp;&nbsp;Répetition : <?= $exercise["repetition"] ?>
             <?php } ?>
-            <?= $exercise['id']?>
+
             <div class="right w3-container">
                 <a href="index.php?action=exDetails&name=<?=$exercise['exercise']?>">
                     <button  type="button" style="width: 35%">Détails</button>

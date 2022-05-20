@@ -53,6 +53,30 @@ function getExercises()
     return $exercises;
 }
 
+function getExSequencies()
+{
+    $exsequencies = getAllItems("sequencies
+                    inner join exercises on exercise_id = exercises.id
+                    inner join programs on program_id = programs.id");
+    return $exsequencies;
+}
+
+function getExPlaces()
+{
+    $explaces = getAllItems("exercises_practice_places
+                inner join exercises on exercise_id = exercises.id
+                inner join places on place_id = places.id");
+    return $explaces;
+}
+
+function getExAreas()
+{
+    $exareas = getAllItems("exercises_use_targetedareas
+                inner join exercises on exercise_id = exercises.id
+                inner join targetedareas on targetedarea_id = targetedareas.id");
+    return $exareas;
+}
+
 function getAnItem($table) // get un item
 {
     try {
@@ -119,22 +143,25 @@ function addAMaterial($material)
 {
     addAnItem("materials (name) Values ('$material')");
 }
-function addAnEx($name,$image,$description,$reps,$time,$diff,$material){
+
+function addAnEx($name, $image, $description, $reps, $time, $diff, $material)
+{
 
     addAnItem("exercises (exercise,image,description,repetition,time,difficulty,materials_id)
     Values ('$name','$image','$description',$reps,$time,$diff,$material)");
 }
 
-function addAnExPlace($exerciseId,$placeId)
+function addAnExPlace($exerciseId, $placeId)
 {
     addAnItem("exercises_practice_places (exercise_id,place_id) Values ($exerciseId,$placeId)");
 }
-function addAnExArea($exerciseId,$areaId)
+
+function addAnExArea($exerciseId, $areaId)
 {
     addAnItem("exercises_use_targetedareas (exercise_id,targetedarea_id) Values ($exerciseId,$areaId)");
 }
 
-function addSequencie($exerciseId,$programId)
+function addSequencie($exerciseId, $programId)
 {
     addAnItem("sequencies (exercise_id,program_id) Values($exerciseId,$programId)");
 }
@@ -175,6 +202,7 @@ function delAMaterial($material)
 {
     deleteItem("materials where name = '$material'");
 }
+
 function callPDO()
 {
     require ".const.php";
@@ -182,3 +210,8 @@ function callPDO()
     return $dbh;
 
 }
+/*
+ * select * from sequencies
+inner join exercises on exercise_id = exercises.id
+inner join programs on program_id = programs.id
+*/

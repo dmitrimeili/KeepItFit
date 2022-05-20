@@ -100,7 +100,11 @@ function logout()
 function PersonalPage()
 {
     if ($_SESSION['role_id'] == 1) {
+
+        $places = getPlaces();
+        $programs = getPrograms();
         require_once "view/personal.php";
+
     } else {
         $places = getPlaces();
         $programs = getPrograms();
@@ -235,23 +239,19 @@ function createExPage()
 function createEx($info, $file)
 {
     $getExercises = getExercises();
-    foreach ($getExercises as $getExercise){
-        if($getExercise['exercise'] == $info['name'])
-        {
+    foreach ($getExercises as $getExercise) {
+        if ($getExercise['exercise'] == $info['name']) {
             $exist = true;
         }
     }
-    if($exist == true)
-    {
+    if ($exist == true) {
         $_SESSION["flashmessage"] = "le nom de l'exercice existe déja.";
         createExPage();
-    }
-    elseif (($info['name'] == "") || ($info['description'] == "") || ($info['difficulty'] == "") || ($info['material'] == "") || ($info['place'] == "") || ($file['fileToUpload']['name'] == "")) {
+    } elseif (($info['name'] == "") || ($info['description'] == "") || ($info['difficulty'] == "") || ($info['material'] == "") || ($info['place'] == "") || ($file['fileToUpload']['name'] == "")) {
         $_SESSION["flashmessage"] = "Veuillez remplir tout les champs";
         createExPage();
 
-    }
-    else {
+    } else {
         $target_dir = "images/";
         $target_file = $target_dir . basename($file["fileToUpload"]["name"]);
         $uploadOk = 1;
@@ -297,12 +297,10 @@ function createEx($info, $file)
             if (move_uploaded_file($file["fileToUpload"]["tmp_name"], $target_file)) {
                 $description = htmlspecialchars($info["description"]);//utilise la fonction htmlspecialchars pour omettre les ' quand on execute l'sql
 
-                if($info['reps'] == "")
-                {
+                if ($info['reps'] == "") {
                     $info['reps'] = 0;
                 }
-                if($info['time'] == "")
-                {
+                if ($info['time'] == "") {
                     $info['time'] = 0;
                 }
                 addAnEx($info['name'], $file["fileToUpload"]["name"], $description, $info['reps'], $info['time'], $info['difficulty'], $info['material']);
@@ -333,4 +331,31 @@ function exDetails($name)
 {
     $exercise = getAnExercise($name['name']);
     require_once "view/exDetails.php";
+}
+
+function createProgram($info)
+{
+
+    $exercises = getExercises();
+    $explaces = getExPlaces();
+    $exsequencies = getExSequencies();
+
+    foreach ($explaces as $explace) {
+        if ($info['place'] == $explace['place_id'])
+        {
+            $id = $explace['exercise_id'];
+            foreach ($exsequencies as $exsequency)
+            {
+                if(($info['program'] == $exsequency['program_id']) && ($id == $exsequency['exercise_id']))
+                {
+                    var_dump($id,$exsequency['exercise_id']);
+                }
+            }
+        }
+    }
+
+    foreach ($exercises as $exercise) {
+
+    }
+
 }
