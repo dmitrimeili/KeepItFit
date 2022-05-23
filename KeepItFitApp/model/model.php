@@ -77,6 +77,18 @@ function getExAreas()
     return $exareas;
 }
 
+function getExByAreaPlace($placeid,$programid)
+{
+    $ex = getAllItems("exercises_practice_places epp
+inner join exercises on epp.exercise_id = exercises.id
+inner join places on place_id = places.id
+inner join sequencies on sequencies.exercise_id = exercises.id
+inner join programs on programs.id = sequencies.program_id
+where places.id = $placeid
+AND programs.id = $programid");
+    return $ex;
+}
+
 function getAnItem($table) // get un item
 {
     try {
@@ -211,12 +223,15 @@ function callPDO()
 
 }
 /*
- * Select * from exercises_practice_places epp
+ *  Select * from exercises_practice_places epp
 inner join exercises on epp.exercise_id = exercises.id
 inner join places on place_id = places.id
 inner join sequencies on sequencies.exercise_id = exercises.id
 inner join programs on programs.id = sequencies.program_id
-where places.place = "Extérieur"
-AND programs.name = "Musculation"
+inner join  exercises_use_targetedareas eut on eut.exercise_id = exercises.id
+inner join targetedareas on targetedareas.id = eut.targetedarea_id
+
+where places.id = 4
+AND programs.id = 1
 
 */

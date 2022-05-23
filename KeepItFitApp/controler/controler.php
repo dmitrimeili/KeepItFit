@@ -336,8 +336,9 @@ function exDetails($name)
 function createProgram($info)
 {
 
-    $exercises = getExercises();
-    $explaces = getExPlaces();
+    $exercises = getExByAreaPlace($info['place'],$info['program']);
+    var_dump($exercises);
+    /*$explaces = getExPlaces();
     $exsequencies = getExSequencies();
 
     foreach ($explaces as $explace) {
@@ -356,6 +357,6 @@ function createProgram($info)
 
     foreach ($exercises as $exercise) {
 
-    }
+    }*/
 
 }
