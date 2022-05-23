@@ -211,7 +211,12 @@ function callPDO()
 
 }
 /*
- * select * from sequencies
-inner join exercises on exercise_id = exercises.id
-inner join programs on program_id = programs.id
+ * Select * from exercises_practice_places epp
+inner join exercises on epp.exercise_id = exercises.id
+inner join places on place_id = places.id
+inner join sequencies on sequencies.exercise_id = exercises.id
+inner join programs on programs.id = sequencies.program_id
+where places.place = "Extérieur"
+AND programs.name = "Musculation"
+
 */
