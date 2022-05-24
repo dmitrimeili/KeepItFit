@@ -1,12 +1,8 @@
 <?php
 session_start();
 require "controler/controler.php";
-if(!isset($_GET["action"])){
-    $page = $_GET["action"];
-}else{
-    $page = null;
-}
-
+$_GET['action'] = null;
+$page = $_GET["action"];
 switch ($page) {
     case "Login";
         login();
