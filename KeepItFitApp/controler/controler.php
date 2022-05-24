@@ -335,10 +335,18 @@ function exDetails($name)
 
 function createProgram($info)
 {
+    $maxId = getMaxIdAreas();
+    $maxId = (int)$maxId["max(id)"];
+    echo rand(0,$maxId);
 
     $exercises = getExByAreaPlace($info['place'],$info['program']);
-    var_dump($exercises);
+   foreach ($exercises as $exercise)
+   {
+        var_dump($exercise["exercise_id"]);
+   }
+
     /*$explaces = getExPlaces();
+    $exsequencies = getExSequencies();
     $exsequencies = getExSequencies();
 
     foreach ($explaces as $explace) {

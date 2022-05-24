@@ -84,8 +84,12 @@ inner join exercises on epp.exercise_id = exercises.id
 inner join places on place_id = places.id
 inner join sequencies on sequencies.exercise_id = exercises.id
 inner join programs on programs.id = sequencies.program_id
+inner join  exercises_use_targetedareas eut on eut.exercise_id = exercises.id
+inner join targetedareas on targetedareas.id = eut.targetedarea_id
+
 where places.id = $placeid
-AND programs.id = $programid");
+AND programs.id = $programid
+");
     return $ex;
 }
 
@@ -93,7 +97,7 @@ function getAnItem($table) // get un item
 {
     try {
         $dbh = callPDO();
-        $query = "SELECT * FROM $table";
+        $query = "SELECT $table";
         $statment = $dbh->prepare($query);
         $statment->execute();
         $queryResults = $statment->fetch(PDO::FETCH_ASSOC);
@@ -104,10 +108,15 @@ function getAnItem($table) // get un item
         return null;
     }
 }
+function getMaxIdAreas()
+{
+    $maxId = getAnItem("max(id) from targetedareas");
+    return $maxId;
+}
 
 function getAnExercise($name)
 {
-    $exercise = getAnItem("exercises where exercise = '$name'");
+    $exercise = getAnItem("* FROM exercises where exercise = '$name'");
     return $exercise;
 
 }
