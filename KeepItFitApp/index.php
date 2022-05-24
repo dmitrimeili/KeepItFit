@@ -3,6 +3,8 @@ session_start();
 require "controler/controler.php";
 if(!isset($_GET["action"])){
     $page = $_GET["action"];
+}else{
+    $page = null;
 }
 
 switch ($page) {
