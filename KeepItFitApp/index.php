@@ -65,8 +65,11 @@ switch ($page) {
     case "CreateProgram";
         createProgram($_POST);
         break;
-        case "PersonalProgramPage";
+    case "PersonalProgramPage";
         personalProgramPage($_GET);
+        break;
+    case "CreatePDF";
+        createPDF($_GET);
         break;
     default:
         MainPage();

@@ -19,6 +19,7 @@ $class = "no-sidebar";
                     <button type="button" style="width: 35%">Détails</button>
                 </a>
             </div>
+
             <br>
             <br>
         </div>

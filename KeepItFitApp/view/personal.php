@@ -31,10 +31,17 @@ $class = "no-sidebar";
             <?php foreach ($persoprogs as $persoprog) {?>
                 <div class="rounded w3-hover-shadow"><br>
                     <header class="w3-container "><h2> Type : <?= $persoprog["name"] ?><br></h2></header>
-                    <div class="right w3-container">
+                    <div class="row justify-content-center">
+                    <div class="col-sm w3-container">
                         <a href="index.php?action=PersonalProgramPage&progId=<?= $persoprog['program_id'] ?>">
                             <button type="button" style="width: 35%">Détails</button>
                         </a>
+                    </div>
+                    <div class="col-sm w3-container">
+                        <a href="index.php?action=CreatePDF&name=<?= $persoprog['name'] ?>">
+                            <button type="button" style="width: 35%">Créer un pdf</button>
+                        </a>
+                    </div>
                     </div>
                     <br>
                     <br>

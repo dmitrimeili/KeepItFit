@@ -382,6 +382,31 @@ function createProgram($info)
 function PersonalProgramPage($info)
 {
 
-    $exercises = getExUserPrograms($_SESSION['id'],$info['progId']);
+    $exercises = getExUserPrograms($_SESSION['id'], $info['progId']);
     require_once "view/personalprogram.php";
+}
+
+function createPDF($info)
+{
+
+    require_once __DIR__ . '/../vendor/autoload.php';
+
+    $mpdf = new \Mpdf\Mpdf();
+    $data = $info['name'];
+    $mpdf->WriteHTML($data);
+    $mpdf->Output('myfile.pdf','D');
+
+   /*require_once 'vendor/autoload.php';
+    // create new PDF instance
+    $mpdf = new mPDF();
+    //Create PDF
+    $data = $info['name'];
+    //Write PDF
+    $mpdf->WriteHTML($data);
+
+    //Output to browser
+    $mpdf->Output('myfile.pdf','D');
+*/
+
+
 }
