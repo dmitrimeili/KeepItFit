@@ -103,6 +103,7 @@ function PersonalPage()
 
         $places = getPlaces();
         $programs = getPrograms();
+        $persoprogs = getUserPrograms($_SESSION['id']);
         require_once "view/personal.php";
 
     } else {
@@ -335,36 +336,52 @@ function exDetails($name)
 
 function createProgram($info)
 {
-    $maxId = getMaxIdAreas();
+
+    $maxId = getMaxIdEx();
+    $minId = getMinIdEx();
     $maxId = (int)$maxId["max(id)"];
-    echo rand(0,$maxId);
+    $minId = (int)$minId['min(id)'];
+    $userseqs = getUserSequencies($_SESSION['id']);
+    $exercises = getExByAreaPlace($info['place'], $info['program']);
+    $chosen = [];
+    $area = [];
+    foreach ($userseqs as $userseq) {
+        if ($userseq['program_id'] == $info['program']) {
+            delUserProgram($userseq['sequencie_id']);
 
-    $exercises = getExByAreaPlace($info['place'],$info['program']);
-   foreach ($exercises as $exercise)
-   {
-        var_dump($exercise["exercise_id"]);
-   }
+        }
+    }
 
-    /*$explaces = getExPlaces();
-    $exsequencies = getExSequencies();
-    $exsequencies = getExSequencies();
+    while (count($chosen) < 6) {
+        $rand = rand($minId, $maxId);
+        foreach ($exercises as $exercise) {
+            if ($exercise['exId'] == $rand) {
+                if (in_array($rand, $chosen) != true) {
 
-    foreach ($explaces as $explace) {
-        if ($info['place'] == $explace['place_id'])
-        {
-            $id = $explace['exercise_id'];
-            foreach ($exsequencies as $exsequency)
-            {
-                if(($info['program'] == $exsequency['program_id']) && ($id == $exsequency['exercise_id']))
-                {
-                    var_dump($id,$exsequency['exercise_id']);
+                    if (in_array($exercise['areaId'], $area) != true) {
+
+                        echo "<br><br> creation ex " . $exercise['exercise'] . " zone : " . $exercise['areaName'];
+                        $chosen[] = $rand;
+                        $area[] = $exercise['areaId'];
+
+                        addUserProgram($exercise['sequencieId'], $_SESSION['id']);
+                        PersonalPage();
+
+
+                    }
+
                 }
+                break;
             }
         }
     }
 
-    foreach ($exercises as $exercise) {
 
-    }*/
+}
 
+function PersonalProgramPage($info)
+{
+
+    $exercises = getExUserPrograms($_SESSION['id'],$info['progId']);
+    require_once "view/personalprogram.php";
 }

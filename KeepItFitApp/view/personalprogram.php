@@ -2,13 +2,7 @@
 ob_start();
 $class = "no-sidebar";
 ?>
-
 <div class="container wrapper style1 centered">
-    <div class="col-sm">
-        <a href="index.php?action=CreateExPage" class="centered">
-            <button>Créer un exercice</button>
-        </a>
-    </div>
     <?php foreach ($exercises as $exercise) { ?>
         <div class="rounded w3-hover-shadow"><br>
             <img src="images/<?= $exercise['image'] ?>" width="150px" height="150px">
@@ -36,4 +30,3 @@ $class = "no-sidebar";
 $content = ob_get_clean();
 require_once "gabarit.php";
 ?>
-

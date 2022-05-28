@@ -5,7 +5,7 @@ function getAllItems($table)
 {
     try {
         $dbh = callPDO();
-        $query = "SELECT * FROM $table";
+        $query = "SELECT $table";
         $statement = $dbh->prepare($query);//prepare query
         $statement->execute();//execute query
         $queryResult = $statement->fetchAll(PDO::FETCH_ASSOC);//prepare result for client
@@ -19,43 +19,43 @@ function getAllItems($table)
 
 function getUsers()
 {
-    $users = getAllItems("users");
+    $users = getAllItems(" * FROM users");
     return $users;
 }
 
 function getPlaces()
 {
-    $places = getAllItems("places");
+    $places = getAllItems(" * FROM places");
     return $places;
 }
 
 function getTargetedAreas()
 {
-    $areas = getAllItems("targetedareas");
+    $areas = getAllItems(" * FROM targetedareas");
     return $areas;
 }
 
 function getPrograms()
 {
-    $programs = getAllItems("programs");
+    $programs = getAllItems(" * FROM programs");
     return $programs;
 }
 
 function getMaterials()
 {
-    $materials = getAllItems("materials");
+    $materials = getAllItems(" * FROM materials");
     return $materials;
 }
 
 function getExercises()
 {
-    $exercises = getAllItems("exercises");
+    $exercises = getAllItems(" * FROM exercises");
     return $exercises;
 }
 
 function getExSequencies()
 {
-    $exsequencies = getAllItems("sequencies
+    $exsequencies = getAllItems(" * FROM sequencies
                     inner join exercises on exercise_id = exercises.id
                     inner join programs on program_id = programs.id");
     return $exsequencies;
@@ -63,7 +63,7 @@ function getExSequencies()
 
 function getExPlaces()
 {
-    $explaces = getAllItems("exercises_practice_places
+    $explaces = getAllItems(" * FROM exercises_practice_places
                 inner join exercises on exercise_id = exercises.id
                 inner join places on place_id = places.id");
     return $explaces;
@@ -71,22 +71,50 @@ function getExPlaces()
 
 function getExAreas()
 {
-    $exareas = getAllItems("exercises_use_targetedareas
+    $exareas = getAllItems(" * FROM exercises_use_targetedareas
                 inner join exercises on exercise_id = exercises.id
                 inner join targetedareas on targetedarea_id = targetedareas.id");
     return $exareas;
 }
 
+function getUserSequencies($userId)
+{
+    $userseq = getAllItems("* FROM sequencies_has_users
+                inner join sequencies on sequencie_id = sequencies.id
+                inner join programs on program_id = programs.id
+                where user_id = $userId");
+    return $userseq;
+}
+
+function getUserPrograms($userId)
+{
+    $userprogram = getAllItems("distinct program_id, name FROM keepitfit.sequencies_has_users
+                inner join sequencies on sequencie_id = sequencies.id
+                inner join programs on program_id = programs.id
+                where user_id = $userId");
+    return $userprogram;
+}
+
+function getExUserPrograms($userId,$programId)
+{
+    $ex = getAllItems("* FROM sequencies_has_users
+                inner join sequencies on sequencie_id = sequencies.id
+                inner join programs on program_id = programs.id
+                inner join exercises on exercise_id = exercises.id
+                where user_id = $userId and
+                program_id = $programId");
+    return $ex;
+}
+
 function getExByAreaPlace($placeid,$programid)
 {
-    $ex = getAllItems("exercises_practice_places epp
+    $ex = getAllItems("exercises.id exId, exercises.exercise, targetedareas.id areaId, targetedareas.name areaName, places.id placeId, places.place, programs.id programId, programs.name progName, sequencies.id sequencieId, sequencies.exercise_id, sequencies.program_id from exercises_practice_places epp
 inner join exercises on epp.exercise_id = exercises.id
 inner join places on place_id = places.id
 inner join sequencies on sequencies.exercise_id = exercises.id
 inner join programs on programs.id = sequencies.program_id
 inner join  exercises_use_targetedareas eut on eut.exercise_id = exercises.id
 inner join targetedareas on targetedareas.id = eut.targetedarea_id
-
 where places.id = $placeid
 AND programs.id = $programid
 ");
@@ -112,6 +140,18 @@ function getMaxIdAreas()
 {
     $maxId = getAnItem("max(id) from targetedareas");
     return $maxId;
+}
+
+function getMaxIdEx()
+{
+    $maxId = getAnItem("max(id) from exercises");
+    return $maxId;
+}
+
+function getMinIdEx()
+{
+   $minId = getAnItem("min(id) from exercises");
+    return $minId;
 }
 
 function getAnExercise($name)
@@ -187,6 +227,11 @@ function addSequencie($exerciseId, $programId)
     addAnItem("sequencies (exercise_id,program_id) Values($exerciseId,$programId)");
 }
 
+function addUserProgram($sequencieId,$userId)
+{
+    addAnItem("sequencies_has_users (sequencie_id,user_id) Values($sequencieId,$userId)");
+}
+
 function deleteItem($table)// mettre à jour un item dans la bdd
 {
     try {
@@ -224,6 +269,11 @@ function delAMaterial($material)
     deleteItem("materials where name = '$material'");
 }
 
+function delUserProgram($seqId)
+{
+    deleteItem("sequencies_has_users where sequencie_id = $seqId");
+}
+
 function callPDO()
 {
     require ".const.php";
@@ -232,14 +282,13 @@ function callPDO()
 
 }
 /*
- *  Select * from exercises_practice_places epp
+ * Select exercises.id exId, exercises.exercise, targetedareas.id areaId, targetedareas.name, places.id placeId, places.place, programs.id programId, programs.name, sequencies.id sequencieId, sequencies.exercise_id, sequencies.program_id from exercises_practice_places epp
 inner join exercises on epp.exercise_id = exercises.id
 inner join places on place_id = places.id
 inner join sequencies on sequencies.exercise_id = exercises.id
 inner join programs on programs.id = sequencies.program_id
 inner join  exercises_use_targetedareas eut on eut.exercise_id = exercises.id
 inner join targetedareas on targetedareas.id = eut.targetedarea_id
-
 where places.id = 4
 AND programs.id = 1
 

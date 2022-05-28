@@ -1,9 +1,9 @@
 <?php
 session_start();
 require "controler/controler.php";
-if(!isset($_GET['action'])){
+if (!isset($_GET['action'])) {
     $_GET['action'] = null;
-}else{
+} else {
     $page = $_GET["action"];
 }
 
@@ -62,8 +62,11 @@ switch ($page) {
     case "exDetails";
         exDetails($_GET);
         break;
-        case "CreateProgram";
+    case "CreateProgram";
         createProgram($_POST);
+        break;
+        case "PersonalProgramPage";
+        personalProgramPage($_GET);
         break;
     default:
         MainPage();
