@@ -383,30 +383,55 @@ function PersonalProgramPage($info)
 {
 
     $exercises = getExUserPrograms($_SESSION['id'], $info['progId']);
+    var_dump($exercises);
     require_once "view/personalprogram.php";
 }
 
 function createPDF($info)
 {
+    $exercises = getExUserPrograms($_SESSION['id'], $info['program_id']);
+    $exname = "";
+    $exdesc = "";
+    $eximg = "";
+    $exreps = "";
+    $extime = "";
+    $extot = "";
+
+
+    foreach ($exercises as $exercise) {
+        $exname = "<h1>" . $exercise['exercise'] . "</h1> <br>";
+        $exdesc = $exercise['description'] . "<br>";
+        $eximg = "<img src='images/" . $exercise['image'] . "' width='150px' height='150px'> <br>";
+        if ($exercise['time'] != 0) {
+            $extime = "Temps : " . $exercise['time'] . " s";
+        }
+        if ($exercise['repetition'] != 0) {
+            $extime = "Répetition : " . $exercise['repetition'];
+        }
+        $extot = $extot . $exname . $eximg . $extime . "  " . $exreps . "<br>";
+
+
+    }
 
     require_once __DIR__ . '/../vendor/autoload.php';
 
     $mpdf = new \Mpdf\Mpdf();
-    $data = $info['name'];
-    $mpdf->WriteHTML($data);
-    $mpdf->Output('myfile.pdf','D');
 
-   /*require_once 'vendor/autoload.php';
-    // create new PDF instance
-    $mpdf = new mPDF();
-    //Create PDF
-    $data = $info['name'];
-    //Write PDF
+    $data = $extot;
     $mpdf->WriteHTML($data);
+    $mpdf->Output('myfile.pdf', "D");
 
-    //Output to browser
-    $mpdf->Output('myfile.pdf','D');
-*/
+    /*require_once 'vendor/autoload.php';
+     // create new PDF instance
+     $mpdf = new mPDF();
+     //Create PDF
+     $data = $info['name'];
+     //Write PDF
+     $mpdf->WriteHTML($data);
+
+     //Output to browser
+     $mpdf->Output('myfile.pdf','D');
+ */
 
 
 }

@@ -38,7 +38,7 @@ $class = "no-sidebar";
                         </a>
                     </div>
                     <div class="col-sm w3-container">
-                        <a href="index.php?action=CreatePDF&name=<?= $persoprog['name'] ?>">
+                        <a href="index.php?action=CreatePDF&program_id=<?= $persoprog['program_id'] ?>">
                             <button type="button" style="width: 35%">Créer un pdf</button>
                         </a>
                     </div>
