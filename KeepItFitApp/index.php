@@ -1,6 +1,7 @@
 <?php
 session_start();
 require "controler/controler.php";
+$page = "";
 if (!isset($_GET['action'])) {
     $_GET['action'] = null;
 } else {
