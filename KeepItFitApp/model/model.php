@@ -88,7 +88,7 @@ function getUserSequencies($userId)
 
 function getUserPrograms($userId)
 {
-    $userprogram = getAllItems("distinct program_id, name FROM keepitfit.sequencies_has_users
+    $userprogram = getAllItems("distinct program_id, name FROM sequencies_has_users
                 inner join sequencies on sequencie_id = sequencies.id
                 inner join programs on program_id = programs.id
                 where user_id = $userId");
