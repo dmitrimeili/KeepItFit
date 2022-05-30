@@ -412,11 +412,11 @@ function createPDF($info)
         if ($exercise['repetition'] != 0) {
             $extime = "Répetition : " . $exercise['repetition'];
         }
-        $extot = $extot . $exname . $extime . "  " . $exreps . "<br>";
+        $extot = $extot . $exname . $eximg .  $extime . "  " . $exreps . "<br>";
         $test = $test . $exercise['image'];
 
-    }
 
+    }
 
     require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -424,7 +424,7 @@ function createPDF($info)
 
     $data = $extot;
     $mpdf->WriteHTML($data);
-    $mpdf->Output('myfile.pdf', "D");
+    $mpdf->Output('Programme_'.$exercise['name'].".pdf" , "D");
 
     /*require_once 'vendor/autoload.php';
      // create new PDF instance
