@@ -118,6 +118,7 @@ function PersonalPage()
 function addPlace($place)
 {
     $getPlaces = getPlaces();
+    $exist = "";
 
     foreach ($getPlaces as $getPlace) {
         if ($place['place'] == $getPlace['place']) {
@@ -140,6 +141,7 @@ function addPlace($place)
 function addTargetedArea($area)
 {
     $getAreas = getTargetedAreas();
+    $exist = "";
     foreach ($getAreas as $getArea) {
 
         if ($area['trargetedArea'] == $getArea['name']) {
@@ -161,6 +163,7 @@ function addTargetedArea($area)
 function addProgram($program)
 {
     $getPrograms = getPrograms();
+    $exist = "";
     foreach ($getPrograms as $getProgram) {
         if ($getProgram['name'] == $program['program']) {
             $exist = true;
@@ -180,7 +183,7 @@ function addProgram($program)
 
 function addMaterial($material)
 {
-
+    $exist = "";
     $getMaterials = getMaterials();
 
     foreach ($getMaterials as $getMaterial) {
@@ -239,6 +242,7 @@ function createExPage()
 
 function createEx($info, $file)
 {
+    $exist = "";
     $getExercises = getExercises();
     foreach ($getExercises as $getExercise) {
         if ($getExercise['exercise'] == $info['name']) {
@@ -383,7 +387,6 @@ function PersonalProgramPage($info)
 {
 
     $exercises = getExUserPrograms($_SESSION['id'], $info['progId']);
-    var_dump($exercises);
     require_once "view/personalprogram.php";
 }
 
@@ -396,6 +399,7 @@ function createPDF($info)
     $exreps = "";
     $extime = "";
     $extot = "";
+    $test = "";
 
 
     foreach ($exercises as $exercise) {
@@ -408,10 +412,11 @@ function createPDF($info)
         if ($exercise['repetition'] != 0) {
             $extime = "Répetition : " . $exercise['repetition'];
         }
-        $extot = $extot . $exname . $eximg . $extime . "  " . $exreps . "<br>";
-
+        $extot = $extot . $exname . $extime . "  " . $exreps . "<br>";
+        $test = $test . $exercise['image'];
 
     }
+
 
     require_once __DIR__ . '/../vendor/autoload.php';
 
