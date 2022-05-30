@@ -55,13 +55,13 @@ function SendMail($email,$firstname)
 {
 
     // the message
-    $msg = "Bonjour $firstname,\n\nNous confirmons votre isncription sur KeepItFit !";
+    $msg = "Bonjour $firstname,\n\nNous confirmons votre inscription sur KeepItFit !";
 // use wordwrap() if lines are longer than 70 characters
     $msg = wordwrap($msg, 70);
     $headers = "From:keepitfit.support@outlook.com" . "\r\n";
 
 // send email
-    mail($email, "Inscription MediaCritk", $msg, $headers);
+    mail($email, "Inscription KeepItFit", $msg, $headers);
 
 }
 
