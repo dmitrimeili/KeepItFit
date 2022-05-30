@@ -419,21 +419,37 @@ function createPDF($info)
     $exreps = "";
     $extime = "";
     $extot = "";
-    $test = "";
+    $exmaterial = "";
+    $exdif = "";
+    $exdifval = "";
+    $exarea = "";
+    $exprog = "";
 
     //get info from each exercise to add to pdf
     foreach ($exercises as $exercise) {
         $exname = "<h1>" . $exercise['exercise'] . "</h1> <br>";
-        $exdesc = $exercise['description'] . "<br>";
+        $exdesc = $exercise['description'] . "<br><br>";
         $eximg = "<img src='images/" . $exercise['image'] . "' width='150px' height='150px'> <br>";
         if ($exercise['time'] != 0) {
-            $extime = "Temps : " . $exercise['time'] . " s";
+            $extime = "<h2>Temps : " . $exercise['time'] . " s  </h2>";
         }
         if ($exercise['repetition'] != 0) {
-            $extime = "Répetition : " . $exercise['repetition'];
+            $extime = "<h2>Répetition : " . $exercise['repetition']."</h2>";
         }
+        $exmaterial = "<br><h2> Matériel : ".$exercise['material']."</h2>";
+        switch ($exercise['difficulty']) {
+            case "1";
+                $exdifval = "Facile";
+                break;
+            case "2";
+                $exdifval = "Moyen";
+                break;
+            case "3";
+                $exdifval = "Difficile";
+                break;}
+        $exdif = "<h2>Dificulté : " . $exdifval."</h2><br>";
         // add all exercises
-        $extot = $extot . $exname . $eximg . $extime . "  " . $exreps . "<br>";
+        $extot = $extot . $exname . $eximg .$exdesc. $extime . "  " . $exreps . $exmaterial.$exdif."<br>";
 
 
 
