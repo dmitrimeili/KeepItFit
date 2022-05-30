@@ -18,8 +18,8 @@ function SignUp()
 
 function createAccount($info)
 {
-    $users = getUsers();
-
+    $users = getUsers();//get all users in db
+    //check if all required inputs are filled
     if (($info['firstname'] == "") || ($info['lastname'] == "") || ($info['email'] == "") || ($info['weight'] == "") || ($info['height'] == "") || ($info['password'] == "") || ($info['birthday'] == "")) {
         $_SESSION["flashmessage"] = "Veuillez remplir tout les champs";
         SignUp();
@@ -35,7 +35,7 @@ function createAccount($info)
         if (!isset($login)) {
             $password = $info['password'];
             $password = password_hash($password, PASSWORD_DEFAULT);//Hashing password
-            $newUser = [
+            $newUser = [// store user info
                 "firstname" => $info['firstname'],
                 "lastname" => $info['lastname'],
                 "email" => $info['email'],
@@ -45,13 +45,14 @@ function createAccount($info)
                 "birthday" => $info['birthday'],
                 "role_id" => 1
             ];
-            SendMail($info['email'],$info['firstname']);
+            SendMail($info['email'], $info['firstname']);// send email to confirm register
             addUser($newUser); //Add user in datasheet
             tryLogin($info);
         }
     }
 }
-function SendMail($email,$firstname)
+
+function SendMail($email, $firstname)
 {
 
     // the message
@@ -65,7 +66,7 @@ function SendMail($email,$firstname)
 
 }
 
-    function tryLogin($info)
+function tryLogin($info)
 {
 
     $users = getUsers();//Puts the values of the data sheet users in a table
@@ -112,14 +113,14 @@ function logout()
 
 function PersonalPage()
 {
-    if ($_SESSION['role_id'] == 1) {
+    if ($_SESSION['role_id'] == 1) {// if user is normal user
 
         $places = getPlaces();
         $programs = getPrograms();
         $persoprogs = getUserPrograms($_SESSION['id']);
         require_once "view/personal.php";
 
-    } else {
+    } else {// if user is admin
         $places = getPlaces();
         $programs = getPrograms();
         $areas = getTargetedAreas();
@@ -130,21 +131,21 @@ function PersonalPage()
 
 function addPlace($place)
 {
-    $getPlaces = getPlaces();
+    $getPlaces = getPlaces();// get all places
     $exist = "";
 
-    foreach ($getPlaces as $getPlace) {
+    foreach ($getPlaces as $getPlace) {// check if the place already exists in db
         if ($place['place'] == $getPlace['place']) {
 
             $exist = true;
         }
     }
-    if ($exist == true) {
+    if ($exist == true) {// show error if place already exists
         $_SESSION['flashmessage'] = "Lieu déjà existant";
 
-    } elseif ($place['place'] == "") {
+    } elseif ($place['place'] == "") {// show error if requiered input is empty
         $_SESSION['flashmessage'] = "Champ vide";
-    } else {
+    } else {// add place to db
         addAPlace($place['place']);
     }
     PersonalPage();
@@ -153,20 +154,20 @@ function addPlace($place)
 
 function addTargetedArea($area)
 {
-    $getAreas = getTargetedAreas();
+    $getAreas = getTargetedAreas();// get all targeted areas
     $exist = "";
-    foreach ($getAreas as $getArea) {
+    foreach ($getAreas as $getArea) {// check if the targeted area already exists in db
 
         if ($area['trargetedArea'] == $getArea['name']) {
 
             $exist = true;
         }
     }
-    if ($exist == true) {
+    if ($exist == true) {// show error if targeted area already exists
         $_SESSION['flashmessage'] = "Zone ciblée déjà existante";
-    } elseif ($area['trargetedArea'] == "") {
+    } elseif ($area['trargetedArea'] == "") {// show error if requiered input is empty
         $_SESSION['flashmessage'] = "Champ vide";
-    } else {
+    } else {// add targeted area to db
         addATargetedArea($area["trargetedArea"]);
     }
 
@@ -175,18 +176,18 @@ function addTargetedArea($area)
 
 function addProgram($program)
 {
-    $getPrograms = getPrograms();
+    $getPrograms = getPrograms();// get all programs
     $exist = "";
-    foreach ($getPrograms as $getProgram) {
+    foreach ($getPrograms as $getProgram) {// check if the program already exists in db
         if ($getProgram['name'] == $program['program']) {
             $exist = true;
         }
     }
-    if ($exist == true) {
+    if ($exist == true) {// show error if program already exists
         $_SESSION['flashmessage'] = "Programme déjà existant";
-    } elseif ($program['program'] == "") {
+    } elseif ($program['program'] == "") {// show error if requiered input is empty
         $_SESSION['flashmessage'] = "Champ vide";
-    } else {
+    } else {// add program to db
         addAProgram($program["program"]);
     }
 
@@ -197,16 +198,16 @@ function addProgram($program)
 function addMaterial($material)
 {
     $exist = "";
-    $getMaterials = getMaterials();
+    $getMaterials = getMaterials();// get all materials
 
-    foreach ($getMaterials as $getMaterial) {
+    foreach ($getMaterials as $getMaterial) {// check if the material already exists in db
         if ($getMaterial['name'] == $material['material']) {
             $exist = true;
         }
     }
-    if ($exist == true) {
+    if ($exist == true) {// show error if material already exists
         $_SESSION['flashmessage'] = "Matériel déjà existant";
-    } elseif ($material['material'] == "") {
+    } elseif ($material['material'] == "") {// show error if requiered input is empty
         $_SESSION['flashmessage'] = "Champ vide";
     } else {
         addAMaterial($material["material"]);
@@ -256,16 +257,17 @@ function createExPage()
 function createEx($info, $file)
 {
     $exist = "";
-    $getExercises = getExercises();
-    foreach ($getExercises as $getExercise) {
+    $getExercises = getExercises();// get all materials
+    foreach ($getExercises as $getExercise) {// check if the exercise already exists in db
         if ($getExercise['exercise'] == $info['name']) {
             $exist = true;
         }
     }
-    if ($exist == true) {
+    if ($exist == true) {// show error if exercise already exists
         $_SESSION["flashmessage"] = "le nom de l'exercice existe déja.";
         createExPage();
-    } elseif (($info['name'] == "") || ($info['description'] == "") || ($info['difficulty'] == "") || ($info['material'] == "") || ($info['place'] == "") || ($file['fileToUpload']['name'] == "")) {
+    } // show error if requiered inputs are empty
+    elseif (($info['name'] == "") || ($info['description'] == "") || ($info['difficulty'] == "") || ($info['material'] == "") || ($info['place'] == "") || ($file['fileToUpload']['name'] == "")) {
         $_SESSION["flashmessage"] = "Veuillez remplir tout les champs";
         createExPage();
 
@@ -278,11 +280,11 @@ function createEx($info, $file)
         if (isset($info["submit"])) {
             $check = getimagesize($file["fileToUpload"]["tmp_name"]);
             if ($check !== false) {
-                //echo "File is an image - " . $check["mime"] . ".";
+
 
                 $uploadOk = 1;
             } else {
-                //echo "File is not an image.";
+
                 $uploadOk = 0;
             }
         }
@@ -301,7 +303,7 @@ function createEx($info, $file)
         // Allow certain file formats
         if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
             && $imageFileType != "gif") {
-            //echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+
             $notimage = "seulment les fichiers JPG, JPEG, PNG & GIF sont autorisé";
             $uploadOk = 0;
         }
@@ -309,18 +311,19 @@ function createEx($info, $file)
         if ($uploadOk == 0) {
             $_SESSION['flashmessage'] = "Désolé " . $fileexist . $filelarge . $notimage;
             createExPage();
-            //echo "Sorry, your file was not uploaded.";
+
             // if everything is ok, try to upload file
         } else {
             if (move_uploaded_file($file["fileToUpload"]["tmp_name"], $target_file)) {
                 $description = htmlspecialchars($info["description"]);//utilise la fonction htmlspecialchars pour omettre les ' quand on execute l'sql
 
-                if ($info['reps'] == "") {
+                if ($info['reps'] == "") {// if repetition is null value = 0
                     $info['reps'] = 0;
                 }
-                if ($info['time'] == "") {
+                if ($info['time'] == "") {// if time is null value = 0
                     $info['time'] = 0;
                 }
+                // add exercise to database and to all concerned intermediate tables
                 addAnEx($info['name'], $file["fileToUpload"]["name"], $description, $info['reps'], $info['time'], $info['difficulty'], $info['material']);
                 $exercise = getAnExercise($info['name']);
                 addAnExPlace($exercise['id'], $info['place']);
@@ -328,7 +331,7 @@ function createEx($info, $file)
                 addSequencie($exercise['id'], $info['program']);
                 $_SESSION['flashmessage'] = "exercice créer";
                 allExPage();
-            } else {
+            } else {// if problem with image upload
                 $_SESSION['flashmessage'] = "Désolé il y a eu une erreur au moment de l'upload de l'image veuilliez réessayer.";
                 CreateExPage();
             }
@@ -354,33 +357,37 @@ function exDetails($name)
 function createProgram($info)
 {
 
-    $maxId = getMaxIdEx();
-    $minId = getMinIdEx();
+    $maxId = getMaxIdEx();// get exercises max id
+    $minId = getMinIdEx();// get exercises min id
+    // convert to int
     $maxId = (int)$maxId["max(id)"];
     $minId = (int)$minId['min(id)'];
+    // get user sequencies
     $userseqs = getUserSequencies($_SESSION['id']);
+    // get exercises by area and place
     $exercises = getExByAreaPlace($info['place'], $info['program']);
     $chosen = [];
     $area = [];
-    foreach ($userseqs as $userseq) {
+    foreach ($userseqs as $userseq) {// delete all exercise in relation with the chosen program
         if ($userseq['program_id'] == $info['program']) {
             delUserProgram($userseq['sequencie_id']);
 
         }
     }
-
+    // create program with 6 different exercises
     while (count($chosen) < 6) {
+        // get a random id from specific exercises
         $rand = rand($minId, $maxId);
         foreach ($exercises as $exercise) {
+            //check if the id exists in the chosen exercises
             if ($exercise['exId'] == $rand) {
+                // check if the random number has already been chosen
                 if (in_array($rand, $chosen) != true) {
-
+                    // check if the targeted area from the chosen exercise has already been selected
                     if (in_array($exercise['areaId'], $area) != true) {
-
-                        echo "<br><br> creation ex " . $exercise['exercise'] . " zone : " . $exercise['areaName'];
                         $chosen[] = $rand;
                         $area[] = $exercise['areaId'];
-
+                        // create personal program
                         addUserProgram($exercise['sequencieId'], $_SESSION['id']);
                         PersonalPage();
 
@@ -414,7 +421,7 @@ function createPDF($info)
     $extot = "";
     $test = "";
 
-
+    //get info from each exercise to add to pdf
     foreach ($exercises as $exercise) {
         $exname = "<h1>" . $exercise['exercise'] . "</h1> <br>";
         $exdesc = $exercise['description'] . "<br>";
@@ -425,31 +432,18 @@ function createPDF($info)
         if ($exercise['repetition'] != 0) {
             $extime = "Répetition : " . $exercise['repetition'];
         }
-        $extot = $extot . $exname . $eximg .  $extime . "  " . $exreps . "<br>";
-        $test = $test . $exercise['image'];
+        // add all exercises
+        $extot = $extot . $exname . $eximg . $extime . "  " . $exreps . "<br>";
+
 
 
     }
 
     require_once __DIR__ . '/../vendor/autoload.php';
-
     $mpdf = new \Mpdf\Mpdf();
-
     $data = $extot;
     $mpdf->WriteHTML($data);
-    $mpdf->Output('Programme_'.$exercise['name'].".pdf" , "D");
-
-    /*require_once 'vendor/autoload.php';
-     // create new PDF instance
-     $mpdf = new mPDF();
-     //Create PDF
-     $data = $info['name'];
-     //Write PDF
-     $mpdf->WriteHTML($data);
-
-     //Output to browser
-     $mpdf->Output('myfile.pdf','D');
- */
+    $mpdf->Output('Programme_' . $exercise['name'] . ".pdf", "D");
 
 
 }

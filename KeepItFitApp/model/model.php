@@ -1,7 +1,7 @@
 <?php
 
 
-function getAllItems($table)
+function getAllItems($table)// function to get al items
 {
     try {
         $dbh = callPDO();
@@ -53,31 +53,7 @@ function getExercises()
     return $exercises;
 }
 
-function getExSequencies()
-{
-    $exsequencies = getAllItems(" * FROM sequencies
-                    inner join exercises on exercise_id = exercises.id
-                    inner join programs on program_id = programs.id");
-    return $exsequencies;
-}
-
-function getExPlaces()
-{
-    $explaces = getAllItems(" * FROM exercises_practice_places
-                inner join exercises on exercise_id = exercises.id
-                inner join places on place_id = places.id");
-    return $explaces;
-}
-
-function getExAreas()
-{
-    $exareas = getAllItems(" * FROM exercises_use_targetedareas
-                inner join exercises on exercise_id = exercises.id
-                inner join targetedareas on targetedarea_id = targetedareas.id");
-    return $exareas;
-}
-
-function getUserSequencies($userId)
+function getUserSequencies($userId) // get all users sequencies
 {
     $userseq = getAllItems("* FROM sequencies_has_users
                 inner join sequencies on sequencie_id = sequencies.id
@@ -86,7 +62,7 @@ function getUserSequencies($userId)
     return $userseq;
 }
 
-function getUserPrograms($userId)
+function getUserPrograms($userId)// get one of users sequencies
 {
     $userprogram = getAllItems("distinct program_id, name FROM sequencies_has_users
                 inner join sequencies on sequencie_id = sequencies.id
@@ -95,7 +71,7 @@ function getUserPrograms($userId)
     return $userprogram;
 }
 
-function getExUserPrograms($userId,$programId)
+function getExUserPrograms($userId,$programId)// get all exercises with same user and program input
 {
     $ex = getAllItems("* FROM sequencies_has_users
                 inner join sequencies on sequencie_id = sequencies.id
@@ -106,7 +82,7 @@ function getExUserPrograms($userId,$programId)
     return $ex;
 }
 
-function getExByAreaPlace($placeid,$programid)
+function getExByAreaPlace($placeid,$programid)// get all exercises with same place and program input
 {
     $ex = getAllItems("exercises.id exId, exercises.exercise, targetedareas.id areaId, targetedareas.name areaName, places.id placeId, places.place, programs.id programId, programs.name progName, sequencies.id sequencieId, sequencies.exercise_id, sequencies.program_id from exercises_practice_places epp
 inner join exercises on epp.exercise_id = exercises.id
@@ -135,11 +111,6 @@ function getAnItem($table) // get un item
         print "Error!: " . $e->getMessage() . "<br/>";
         return null;
     }
-}
-function getMaxIdAreas()
-{
-    $maxId = getAnItem("max(id) from targetedareas");
-    return $maxId;
 }
 
 function getMaxIdEx()
@@ -281,15 +252,3 @@ function callPDO()
     return $dbh;
 
 }
-/*
- * Select exercises.id exId, exercises.exercise, targetedareas.id areaId, targetedareas.name, places.id placeId, places.place, programs.id programId, programs.name, sequencies.id sequencieId, sequencies.exercise_id, sequencies.program_id from exercises_practice_places epp
-inner join exercises on epp.exercise_id = exercises.id
-inner join places on place_id = places.id
-inner join sequencies on sequencies.exercise_id = exercises.id
-inner join programs on programs.id = sequencies.program_id
-inner join  exercises_use_targetedareas eut on eut.exercise_id = exercises.id
-inner join targetedareas on targetedareas.id = eut.targetedarea_id
-where places.id = 4
-AND programs.id = 1
-
-*/
