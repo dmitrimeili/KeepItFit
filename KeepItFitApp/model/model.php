@@ -127,7 +127,13 @@ function getMinIdEx()
 
 function getAnExercise($name)
 {
-    $exercise = getAnItem("* FROM exercises where exercise = '$name'");
+    $exercise = getAnItem("exercise, image, description, repetition, time, difficulty, materials.name material, targetedareas.name area, programs.name program  FROM exercises_use_targetedareas
+                inner join targetedareas on targetedarea_id = targetedareas.id
+                inner join exercises on exercise_id = exercises.id
+                inner join materials on materials_id = materials.id
+                inner join sequencies on exercises.id = sequencies.exercise_id
+                inner join programs on program_id = programs.id
+                where exercise = '$name'");
     return $exercise;
 
 }
