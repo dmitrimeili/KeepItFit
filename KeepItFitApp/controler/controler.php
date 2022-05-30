@@ -45,14 +45,27 @@ function createAccount($info)
                 "birthday" => $info['birthday'],
                 "role_id" => 1
             ];
-
+            SendMail($info['email'],$info['firstname']);
             addUser($newUser); //Add user in datasheet
             tryLogin($info);
         }
     }
 }
+function SendMail($email,$firstname)
+{
 
-function tryLogin($info)
+    // the message
+    $msg = "Bonjour $firstname,\n\nNous confirmons votre isncription sur KeepItFit !";
+// use wordwrap() if lines are longer than 70 characters
+    $msg = wordwrap($msg, 70);
+    $headers = "From:keepitfit.support@outlook.com" . "\r\n" ;
+
+// send email
+    mail($email, "Inscription MediaCritk", $msg,$headers);
+
+
+
+    function tryLogin($info)
 {
 
     $users = getUsers();//Puts the values of the data sheet users in a table
