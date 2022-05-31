@@ -33,16 +33,16 @@ $class = "no-sidebar";
                     </div>
                     <br>
                     <div id="date-picker-example" class="md-form md-outline input-with-post-icon datepicker" inline="true">
-                         Date de naissance : <input placeholder="Select date" type="date" id="example" class="form-control" name="birthday">
+                         Date de naissance : <input placeholder="Select date" type="date" id="example" class="form-control" name="birthday" max="2005-01-01" min="1972-01-01">
 
                     </div>
                     <br>
                     <div >
-                        Poids : <input class="form-control"  type="number" name="weight">
+                        Poids : <input class="form-control"  type="number" name="weight" min="35" max="200">
                     </div>
                     <br>
                     <div >
-                        Taille en cm : <input class="form-control"  type="number" name="height">
+                        Taille en cm : <input class="form-control"  type="number" name="height" min="100" max="230">
                     </div>
                     <br>
                     <div class="form-group">
