@@ -412,6 +412,7 @@ function PersonalProgramPage($info)
 
 function createPDF($info)
 {
+    ob_start();
     $exercises = getExUserPrograms($_SESSION['id'], $info['program_id']);
     $exname = "";
     $exdesc = "";
@@ -454,7 +455,7 @@ function createPDF($info)
 
 
     }
-
+    ob_end_flush();
     require_once __DIR__ . '/../vendor/autoload.php';
     $mpdf = new \Mpdf\Mpdf();
     $data = $extot;
