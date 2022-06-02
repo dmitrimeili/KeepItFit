@@ -449,7 +449,7 @@ function createPDF($info)
                 break;}
         $exdif = "<h2>Dificulté : " . $exdifval."</h2><br>";
         // add all exercises
-        $extot = $extot . $exname . $eximg .$exdesc. $extime . "  " . $exreps .$exdif."<br>";
+        $extot = $extot . $exname .$exdesc. $extime . "  " . $exreps .$exdif."<br>";
 
 
 
