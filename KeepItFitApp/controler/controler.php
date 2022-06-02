@@ -424,7 +424,7 @@ function createPDF($info)
     $exdifval = "";
     $exarea = "";
     $exprog = "";
-
+    echo "test branch master";
     //get info from each exercise to add to pdf
     foreach ($exercises as $exercise) {
         $exname = "<h1>" . $exercise['exercise'] . "</h1> <br>";
