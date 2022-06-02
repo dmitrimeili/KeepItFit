@@ -436,7 +436,7 @@ function createPDF($info)
         if ($exercise['repetition'] != 0) {
             $extime = "<h2>Répetition : " . $exercise['repetition']."</h2>";
         }
-        $exmaterial = "<br><h2> Matériel : ".$exercise['material']."</h2>";
+        //$exmaterial = "<br><h2> Matériel : ".$exercise['material']."</h2>";
         switch ($exercise['difficulty']) {
             case "1";
                 $exdifval = "Facile";
