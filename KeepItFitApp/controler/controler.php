@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once 'model/model.php';
 
 function MainPage()
@@ -412,7 +413,7 @@ function PersonalProgramPage($info)
 
 function createPDF($info)
 {
-    ob_start();
+
     $exercises = getExUserPrograms($_SESSION['id'], $info['program_id']);
     $exname = "";
     $exdesc = "";
@@ -455,7 +456,7 @@ function createPDF($info)
 
 
     }
-    ob_end_flush();
+    ob_end_clean();
     require_once __DIR__ . '/../vendor/autoload.php';
     $mpdf = new \Mpdf\Mpdf();
     $data = $extot;
