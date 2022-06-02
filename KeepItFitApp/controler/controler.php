@@ -454,7 +454,7 @@ function createPDF($info)
 
 
     }
-    ob_end_clean();
+
     require_once __DIR__ . '/../vendor/autoload.php';
     $mpdf = new \Mpdf\Mpdf();
     $data = $extot;
