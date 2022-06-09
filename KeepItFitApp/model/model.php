@@ -137,6 +137,12 @@ function getAnExercise($name)
     return $exercise;
 
 }
+function getAnEx($name)
+{
+    $exercise = getAnItem("* From exercises where exercise = '$name'");
+    return $exercise;
+
+}
 
 function addAnItem($table)
 {

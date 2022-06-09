@@ -326,7 +326,7 @@ function createEx($info, $file)
                 }
                 // add exercise to database and to all concerned intermediate tables
                 addAnEx($info['name'], $file["fileToUpload"]["name"], $description, $info['reps'], $info['time'], $info['difficulty'], $info['material']);
-                $exercise = getAnExercise($info['name']);
+                $exercise = getAnEx($info['name']);
                 addAnExPlace($exercise['id'], $info['place']);
                 addAnExArea($exercise['id'], $info['area']);
                 addSequencie($exercise['id'], $info['program']);
